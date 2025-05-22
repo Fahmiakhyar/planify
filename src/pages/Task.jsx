@@ -3,19 +3,14 @@ import { useState, useRef, useEffect } from "react";
 
 function App() {
   const [showRightSidebar, setShowRightSidebar] = useState(false);
-  const [activeTab, setActiveTab] = useState("Notes");
-  const [showAddNotePopup, setShowAddNotePopup] = useState(false);
-  const [notes, setNotes] = useState([]);
-  const [noteTitle, setNoteTitle] = useState("");
-  const [noteContent, setNoteContent] = useState("");
-
-  // Add state to track which note's menu is currently open
+  const [activeTab, setActiveTab] = useState("Tasks");
+  const [showAddTaskPopup, setShowAddTaskPopup] = useState(false);
+  const [tasks, setTasks] = useState([]);
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
   const [activeMenuId, setActiveMenuId] = useState(null);
-
-  // Ref for tracking clicks outside the menu
   const menuRef = useRef(null);
 
-  // Handle clicks outside of the menu
   useEffect(() => {
     function handleClickOutside(event) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -33,63 +28,50 @@ function App() {
     setShowRightSidebar(!showRightSidebar);
   };
 
-  const handleTabClick = (tabName) => {
-    setActiveTab(tabName);
+  const openAddTaskPopup = () => {
+    setShowAddTaskPopup(true);
   };
 
-  const openAddNotePopup = () => {
-    setShowAddNotePopup(true);
+  const closeAddTaskPopup = () => {
+    setShowAddTaskPopup(false);
+    setTaskTitle("");
+    setTaskDescription("");
   };
 
-  const closeAddNotePopup = () => {
-    setShowAddNotePopup(false);
-    setNoteTitle("");
-    setNoteContent("");
-  };
-
-  const saveNote = () => {
-    if (noteTitle.trim() === "") {
-      alert("Judul catatan tidak boleh kosong!");
+  const saveTask = () => {
+    if (taskTitle.trim() === "" || taskDescription.trim() === "") {
+      alert("Title and description cannot be empty!");
       return;
     }
 
-    const newNote = {
+    const newTask = {
       id: Date.now(),
-      title: noteTitle,
-      content: noteContent,
+      title: taskTitle,
+      description: taskDescription,
     };
 
-    setNotes([newNote, ...notes]);
-    closeAddNotePopup();
+    setTasks([...tasks, newTask]);
+    closeAddTaskPopup();
   };
 
-  // Toggle the menu for a specific note
-  const toggleNoteMenu = (noteId, e) => {
+  const toggleTaskMenu = (taskId, e) => {
     e.stopPropagation();
-    setActiveMenuId(activeMenuId === noteId ? null : noteId);
+    setActiveMenuId(activeMenuId === taskId ? null : taskId);
   };
 
-  // Handle note actions
-  const handleNoteAction = (action, noteId) => {
+  const handleTaskAction = (action, taskId) => {
     switch (action) {
       case "Edit":
-        // Find the note to edit
-        const noteToEdit = notes.find((note) => note.id === noteId);
-        if (noteToEdit) {
-          setNoteTitle(noteToEdit.title);
-          setNoteContent(noteToEdit.content);
-          setShowAddNotePopup(true);
-          // Remove the old note
-          setNotes(notes.filter((note) => note.id !== noteId));
+        const taskToEdit = tasks.find((task) => task.id === taskId);
+        if (taskToEdit) {
+          setTaskTitle(taskToEdit.title);
+          setTaskDescription(taskToEdit.description);
+          setShowAddTaskPopup(true);
+          setTasks(tasks.filter((task) => task.id !== taskId));
         }
         break;
-      case "Detail":
-        alert(
-          `Note Details: ${notes.find((note) => note.id === noteId)?.title}`
-        );
-        break;
       case "Delete":
-        setNotes(notes.filter((note) => note.id !== noteId));
+        setTasks(tasks.filter((task) => task.id !== taskId));
         break;
       default:
         break;
@@ -101,7 +83,7 @@ function App() {
     <>
       <meta charSet="utf-8" />
       <meta content="width=device-width, initial-scale=1" name="viewport" />
-      <title>Planify - Notes</title>
+      <title>Planify - Tasks</title>
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
         rel="stylesheet"
@@ -164,7 +146,6 @@ function App() {
                 <i className="fas fa-star"></i> Favorites
               </li>
             </ul>
-
             <div className="premium-box">
               <i className="fas fa-gem mb-2"></i>
               <p className="mb-1">
@@ -239,7 +220,7 @@ function App() {
           </header>
 
           <section
-            aria-label="Workbook and notes content"
+            aria-label="Workbook and task board content"
             className="workbook-container"
           >
             <div className="workbook-header">
@@ -251,13 +232,13 @@ function App() {
                 <div
                   key={tab}
                   className={`tab-item ${activeTab === tab ? "active" : ""}`}
-                  onClick={() => handleTabClick(tab)}
+                  onClick={() => setActiveTab(tab)}
                   role="tab"
                   aria-selected={activeTab === tab}
                   tabIndex={0}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
-                      handleTabClick(tab);
+                      setActiveTab(tab);
                     }
                   }}
                 >
@@ -275,83 +256,70 @@ function App() {
               ))}
             </nav>
 
-            <div className="notes-container">
-              <div
-                className="add-note-btn"
-                onClick={openAddNotePopup}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    openAddNotePopup();
-                  }
-                }}
-              >
-                <span>Add Note</span>
-                <i className="fas fa-plus"></i>
-              </div>
-
-              <div className="notes-grid">
-                {notes.length === 0 && <p>Tidak ada catatan.</p>}
-                {notes.map((note) => (
-                  <div
-                    className="note-card"
-                    key={note.id}
-                    style={{ position: "relative" }}
-                  >
-                    <div className="note-actions">
-                      <i
-                        className="fas fa-ellipsis-h"
-                        onClick={(e) => toggleNoteMenu(note.id, e)}
-                        style={{ cursor: "pointer" }}
-                      ></i>
-
-                      {activeMenuId === note.id && (
-                        <div
-                          className="crud-menu"
-                          ref={menuRef}
-                          style={{
-                            position: "absolute",
-                            top: "30px",
-                            right: "0",
-                            backgroundColor: "white",
-                            border: "1px solid #e0e0e0",
-                            borderRadius: "8px",
-                            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                            zIndex: "1000",
-                            minWidth: "120px",
-                            padding: "8px 0",
-                          }}
-                        >
-                          {["Edit", "Detail", "Delete"].map((action) => (
-                            <div
-                              key={action}
-                              onClick={() => handleNoteAction(action, note.id)}
-                              style={{
-                                padding: "12px 20px",
-                                cursor: "pointer",
-                                fontSize: "14px",
-                                color: "#333",
-                                transition: "background-color 0.2s",
-                              }}
-                              onMouseEnter={(e) =>
-                                (e.target.style.backgroundColor = "#f5f5f5")
-                              }
-                              onMouseLeave={(e) =>
-                                (e.target.style.backgroundColor = "white")
-                              }
-                            >
-                              {action}
-                            </div>
-                          ))}
-                        </div>
-                      )}
+            <div className="kanban-wrapper">
+              {/* To-Do Column */}
+              <div className="kanban-column">
+                <div className="column-header">
+                  <div className="column-title">To-Do</div>
+                </div>
+                <div className="task-list">
+                  {tasks.map((task) => (
+                    <div className="task-card" key={task.id}>
+                      <div className="column-actions">
+                        <i
+                          className="fas fa-ellipsis-h"
+                          onClick={(e) => toggleTaskMenu(task.id, e)}
+                          style={{ cursor: "pointer" }}
+                        ></i>
+                        {activeMenuId === task.id && (
+                          <div
+                            className="crud-menu"
+                            ref={menuRef}
+                            style={{
+                              position: "absolute",
+                              top: "30px",
+                              right: "0",
+                              backgroundColor: "white",
+                              border: "1px solid #e0e0e0",
+                              borderRadius: "8px",
+                              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                              zIndex: "1000",
+                              minWidth: "120px",
+                              padding: "8px 0",
+                            }}
+                          >
+                            {["Edit", "Delete"].map((action) => (
+                              <div
+                                key={action}
+                                onClick={() => handleTaskAction(action, task.id)}
+                                style={{
+                                  padding: "12px 20px",
+                                  cursor: "pointer",
+                                  fontSize: "14px",
+                                  color: "#333",
+                                  transition: "background-color 0.2s",
+                                }}
+                                onMouseEnter={(e) =>
+                                  (e.target.style.backgroundColor = "#f5f5f5")
+                                }
+                                onMouseLeave={(e) =>
+                                  (e.target.style.backgroundColor = "white")
+                                }
+                              >
+                                {action}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      <div className="task-title">{task.title}</div>
+                      <div className="task-description">{task.description}</div>
                     </div>
-
-                    <h3 className="note-title">{note.title}</h3>
-                    <div className="note-content">{note.content}</div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                <button className="add-list-btn" onClick={openAddTaskPopup}>
+                  + Add Task
+                </button>
               </div>
             </div>
           </section>
@@ -359,11 +327,11 @@ function App() {
       </div>
 
       <div
-        id="addNotePopup"
-        className={`popup-overlay ${showAddNotePopup ? "active" : ""}`}
+        id="taskPopupOverlay"
+        className={`popup-overlay ${showAddTaskPopup ? "active" : ""}`}
         onClick={(e) => {
-          if (e.target.id === "addNotePopup") {
-            closeAddNotePopup();
+          if (e.target.id === "taskPopupOverlay") {
+            closeAddTaskPopup();
           }
         }}
       >
@@ -375,7 +343,7 @@ function App() {
         >
           <div className="popup-header">
             <h2 className="popup-title" id="popupTitle">
-              Add Note
+              Add Task
             </h2>
           </div>
           <div className="popup-body">
@@ -383,45 +351,31 @@ function App() {
               className="popup-form"
               onSubmit={(e) => {
                 e.preventDefault();
-                saveNote();
+                saveTask();
               }}
-              id="noteForm"
+              id="taskForm"
             >
               <div className="form-group">
-                <label htmlFor="noteTitle">Title</label>
+                <label htmlFor="taskTitle">Title</label>
                 <input
                   type="text"
-                  id="noteTitle"
-                  value={noteTitle}
-                  onChange={(e) => setNoteTitle(e.target.value)}
+                  id="taskTitle"
+                  value={taskTitle}
+                  onChange={(e) => setTaskTitle(e.target.value)}
                   required
                   autoFocus
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="noteContent">Content</label>
+                <label htmlFor="taskDesc">Description</label>
                 <textarea
-                  id="noteContent"
-                  value={noteContent}
-                  onChange={(e) => setNoteContent(e.target.value)}
+                  id="taskDesc"
+                  value={taskDescription}
+                  onChange={(e) => setTaskDescription(e.target.value)}
                 />
               </div>
               <div className="popup-footer">
-                <div className="popup-tools">
-                  <button className="popup-tool" title="Add Emoji">
-                    <i className="far fa-smile"></i>
-                  </button>
-                  <button className="popup-tool" title="Add Checklist">
-                    <i className="fas fa-tasks"></i>
-                  </button>
-                  <button className="popup-tool" title="Add Image">
-                    <i className="far fa-image"></i>
-                  </button>
-                  <button className="popup-tool" title="Add Reminder">
-                    <i className="far fa-bell"></i>
-                  </button>
-                </div>
-                <button type="button" className="save-btn" onClick={saveNote}>
+                <button type="button" className="save-btn" onClick={saveTask}>
                   Save
                 </button>
               </div>
