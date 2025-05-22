@@ -318,7 +318,7 @@ function App() {
                             border: "1px solid #e0e0e0",
                             borderRadius: "8px",
                             boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                            zIndex: "1000",
+                            zIndex: "10000",
                             minWidth: "120px",
                             padding: "8px 0",
                           }}
@@ -333,6 +333,7 @@ function App() {
                                 fontSize: "14px",
                                 color: "#333",
                                 transition: "background-color 0.2s",
+                                 zIndex: "10000",
                               }}
                               onMouseEnter={(e) =>
                                 (e.target.style.backgroundColor = "#f5f5f5")
