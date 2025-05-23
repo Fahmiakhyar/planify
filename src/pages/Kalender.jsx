@@ -1,4 +1,4 @@
-//import from "";
+import '../App.css';
 
 export default function Kalender() {
   return (
