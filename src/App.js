@@ -359,77 +359,76 @@ function App() {
         </main>
       </div>
 
-      <div
-        id="addNotePopup"
-        className={`popup-overlay ${showAddNotePopup ? "active" : ""}`}
-        onClick={(e) => {
-          if (e.target.id === "addNotePopup") {
-            closeAddNotePopup();
-          }
-        }}
-      >
-        <div
-          className="popup-content"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="popupTitle"
-        >
-          <div className="popup-header">
-            <h2 className="popup-title" id="popupTitle">
-              Add Note
-            </h2>
-          </div>
-          <div className="popup-body">
-            <form
-              className="popup-form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                saveNote();
-              }}
-              id="noteForm"
-            >
-              <div className="form-group">
-                <label htmlFor="noteTitle">Title</label>
-                <input
-                  type="text"
-                  id="noteTitle"
-                  value={noteTitle}
-                  onChange={(e) => setNoteTitle(e.target.value)}
-                  required
-                  autoFocus
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="noteContent">Content</label>
-                <textarea
-                  id="noteContent"
-                  value={noteContent}
-                  onChange={(e) => setNoteContent(e.target.value)}
-                />
-              </div>
-              <div className="popup-footer">
-                <div className="popup-tools">
-                  <button className="popup-tool" title="Add Emoji">
-                    <i className="far fa-smile"></i>
-                  </button>
-                  <button className="popup-tool" title="Add Checklist">
-                    <i className="fas fa-tasks"></i>
-                  </button>
-                  <button className="popup-tool" title="Add Image">
-                    <i className="far fa-image"></i>
-                  </button>
-                  <button className="popup-tool" title="Add Reminder">
-                    <i className="far fa-bell"></i>
-                  </button>
-                </div>
-                <button type="button" className="save-btn" onClick={saveNote}>
-                  Save
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+<div
+  className={`custom-popup-overlay ${showAddNotePopup ? 'active' : ''}`}
+  onClick={() => setShowAddNotePopup(false)} // Klik area luar menutup popup
+>
+  <div
+    className="custom-popup-box"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="popupTitle"
+    onClick={(e) => e.stopPropagation()} // Mencegah klik dalam popup menutup
+  >
+    <h5 className="custom-popup-title" id="popupTitle">
+      Add Note
+    </h5>
+
+    <form
+      className="popup-form"
+      onSubmit={(e) => {
+        e.preventDefault();
+        saveNote();
+      }}
+      id="noteForm"
+    >
+      <div className="custom-form-group">
+        <label htmlFor="noteTitle" className="custom-label">Title</label>
+        <input
+          type="text"
+          id="noteTitle"
+          className="custom-input"
+          value={noteTitle}
+          onChange={(e) => setNoteTitle(e.target.value)}
+          required
+          autoFocus
+        />
       </div>
+
+      <div className="custom-form-group">
+        <label htmlFor="noteContent" className="custom-label">Content</label>
+        <textarea
+          id="noteContent"
+          className="custom-input"
+          value={noteContent}
+          onChange={(e) => setNoteContent(e.target.value)}
+        />
+      </div>
+
+      <div className="custom-popup-actions1">
+        <div className="popup-tools">
+          <button type="button" className="popup-tool" title="Add Emoji">
+            <i className="far fa-smile"></i>
+          </button>
+          <button type="button" className="popup-tool" title="Add Checklist">
+            <i className="fas fa-tasks"></i>
+          </button>
+          <button type="button" className="popup-tool" title="Add Image">
+            <i className="far fa-image"></i>
+          </button>
+          <button type="button" className="popup-tool" title="Add Reminder">
+            <i className="far fa-bell"></i>
+          </button>
+        </div>
+
+        <button type="button" className="btn-save" onClick={saveNote}>
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
     </>
   );
 }

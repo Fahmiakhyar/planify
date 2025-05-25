@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import '../task.css';
+import "../pages/task.css";
 
 function App() {
   const [showRightSidebar, setShowRightSidebar] = useState(false);
-  const [activeTab, setActiveTab] = useState("Task");
+  const [activeTab, setActiveTab] = useState("Tasks");
   const [popupVisible, setPopupVisible] = useState(false);
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
@@ -11,25 +11,42 @@ function App() {
   const [reminder, setReminder] = useState("1 Day before");
   const [tasks, setTasks] = useState({
     "To Do": [],
-    "In Progress": [],
+    " Doing": [],
     Done: [],
   });
   const [currentColumn, setCurrentColumn] = useState("To Do");
   const menuRef = useRef(null);
-  const [activeMenuId, setActiveMenuId] = useState(null);
+  const popupRef = useRef(null);
+  const [, setActiveMenuId] = useState(null);
 
   useEffect(() => {
-    function handleClickOutside(event) {
+    function handleClickOutsideMenu(event) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setActiveMenuId(null);
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutsideMenu);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutsideMenu);
     };
   }, []);
+
+  useEffect(() => {
+    function handleClickOutsidePopup(event) {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        closePopup();
+      }
+    }
+
+    if (popupVisible) {
+      document.addEventListener("mousedown", handleClickOutsidePopup);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsidePopup);
+    };
+  }, [popupVisible]);
 
   const toggleRightSidebar = () => {
     setShowRightSidebar(!showRightSidebar);
@@ -173,57 +190,35 @@ function App() {
               </div>
               Planify
             </div>
-            <nav aria-label="User  actions" className="nav-actions">
-              <button
-                aria-label="Message"
-                className="btn-icon"
-                title="Message"
-                type="button"
-              >
-                <i className="far fa-envelope"> </i>
+            <nav aria-label="User actions" className="nav-actions">
+              <button className="btn-icon" aria-label="Message">
+                <i className="far fa-envelope"></i>
               </button>
-              <button
-                aria-label="Notification"
-                className="btn-icon"
-                title="Notification"
-                type="button"
-              >
-                <i className="far fa-bell"> </i>
+              <button className="btn-icon" aria-label="Notification">
+                <i className="far fa-bell"></i>
               </button>
-              <button
-                aria-label="Help"
-                className="btn-icon"
-                title="Help"
-                type="button"
-              >
-                <i className="far fa-circle-question"> </i>
+              <button className="btn-icon" aria-label="Help">
+                <i className="far fa-circle-question"></i>
               </button>
-              <button
-                aria-label="Go Premium"
-                className="premium-btn"
-                type="button"
-              >
+              <button className="premium-btn" aria-label="Go Premium">
                 Go Premium
               </button>
               <img
-                alt="User  Avatar"
                 className="user-avatar"
-                height="40"
                 src="https://storage.googleapis.com/a1aa/image/b1775588-94f7-4a59-b686-0a1dddb0891b.jpg"
+                alt="User Avatar"
                 width="40"
+                height="40"
               />
             </nav>
           </header>
 
-          <section
-            aria-label="Workbook and notes content"
-            className="workbook-container"
-          >
+          <section className="workbook-container">
             <div className="workbook-header">
               <h1 className="workbook-title">Wuling's Workbook</h1>
             </div>
 
-            <nav aria-label="Workbook tabs" className="tab-nav" role="tablist">
+            <nav className="tab-nav" role="tablist">
               {["Calendar", "Tasks", "Notes"].map((tab) => (
                 <div
                   key={tab}
@@ -232,11 +227,6 @@ function App() {
                   role="tab"
                   aria-selected={activeTab === tab}
                   tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      handleTabClick(tab);
-                    }
-                  }}
                 >
                   <i
                     className={`fas fa-${
@@ -294,71 +284,56 @@ function App() {
 
       {/* Popup Overlay */}
       {popupVisible && (
-        <div className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center">
-          <div
-            className="bg-white p-4 rounded shadow"
-            style={{ width: "380px" }}
-          >
-            <h5 className="mb-3 fw-bold">Add Task - {currentColumn}</h5>
+        <div className="custom-popup-overlay2">
+          <div className="custom-popup-box" ref={popupRef}>
+            <h5 className="custom-popup-title">Add Task - {currentColumn}</h5>
 
-            <div className="mb-3">
-              <label
-                htmlFor="taskName"
-                className="form-label fw-semibold text-muted"
-              >
+            <div className="custom-form-group">
+              <label htmlFor="taskName" className="custom-label">
                 Task Name
               </label>
               <input
                 type="text"
                 id="taskName"
-                className="form-control"
+                className="custom-input"
                 value={taskName}
                 onChange={(e) => setTaskName(e.target.value)}
               />
             </div>
 
-            <div className="mb-3">
-              <label
-                htmlFor="taskDescription"
-                className="form-label fw-semibold text-muted"
-              >
+            <div className="custom-form-group">
+              <label htmlFor="taskDescription" className="custom-label">
                 Description
               </label>
               <textarea
                 id="taskDescription"
-                className="form-control"
+                className="custom-input"
                 rows="2"
                 value={taskDescription}
                 onChange={(e) => setTaskDescription(e.target.value)}
               ></textarea>
             </div>
 
-            <div className="mb-3">
-              <label
-                htmlFor="dueDate"
-                className="form-label fw-semibold text-muted"
-              >
+            <div className="custom-form-group">
+              <label htmlFor="dueDate" className="custom-label">
                 Due Date
               </label>
               <input
                 type="date"
                 id="dueDate"
-                className="form-control"
+                className="custom-input"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
               />
             </div>
 
-            <div className="mb-3">
-              <label
-                htmlFor="reminder"
-                className="form-label fw-semibold text-muted"
-              >
+            <div className="custom-form-group">
+              <label htmlFor="reminder" className="custom-label">
                 Reminder
               </label>
               <select
                 id="reminder"
-                className="form-select"
+                className="custom-input"
                 value={reminder}
                 onChange={(e) => setReminder(e.target.value)}
               >
@@ -369,11 +344,8 @@ function App() {
               </select>
             </div>
 
-            <div className="d-flex justify-content-between">
-              <button className="btn btn-secondary" onClick={closePopup}>
-                Cancel
-              </button>
-              <button className="btn btn-primary" onClick={saveTask}>
+            <div className="custom-popup-actions">
+              <button className="btn-save" onClick={saveTask}>
                 Save Task
               </button>
             </div>
