@@ -1,13 +1,45 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../pages/kalender.css";
 
+const taskDetails = {
+  "2025-05-02": {
+    title: "Interview",
+    description: "Online interview with client regarding wireframe approval.",
+    status: "●",
+    createdBy: "img/profile.png",
+    dueDate: "May 2, 2025",
+    createdDate: "April 30, 2025",
+    link: "https://www.example.com/interview", // Ensure this link is valid
+    file: "empty"
+  },
+  "2025-05-05": {
+    title: "Big Idea",
+    description: "Create a big idea for the project.",
+    status: "●",
+    createdBy: "img/profile.png",
+    dueDate: "May 5, 2025",
+    createdDate: "May 1, 2025",
+    link: "https://www.example.com/big-idea",
+    file: "empty"
+  },
+  "2025-05-10": {
+    title: "User  Flow",
+    description: "Finalize user flow design.",
+    status: "●",
+    createdBy: "img/profile.png",
+    dueDate: "May 10, 2025",
+    createdDate: "May 4, 2025",
+    link: "https://www.example.com/user-flow",
+    file: "empty"
+  }
+};
+
 function App() {
   const [showRightSidebar, setShowRightSidebar] = useState(false);
   const [activeTab, setActiveTab] = useState("Calendar");
   const [, setActiveMenuId] = useState(null);
   const [popupVisible, setPopupVisible] = useState(false);
-  const [, setSelectedDate] = useState(null);
-  const [popupDetails, setPopupDetails] = useState({}); // State for popup details
+  const [popupData, setPopupData] = useState({});
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -32,49 +64,23 @@ function App() {
   };
 
   const openPopup = (date) => {
-    setSelectedDate(date);
-    setPopupDetails(getPopupDetails(date)); // Fetch details based on date
-    setPopupVisible(true);
+    const data = taskDetails[date];
+    if (data) {
+      setPopupData(data);
+      setPopupVisible(true);
+    }
   };
 
   const closePopup = () => {
     setPopupVisible(false);
-    setSelectedDate(null);
-  };
-
-  // Function to get popup details based on the date
-  const getPopupDetails = (date) => {
-    const details = {
-      "2025-05-02": {
-        title: "Interview",
-        description: "Interview scheduled for the position.",
-        status: "Pending",
-        createdBy: "User  A",
-        dueDate: "May 2, 2025",
-        createdDate: "April 30, 2025 10:00",
-        link: "https://www.example.com/interview",
-        file: "empty",
-      },
-      "2025-05-05": {
-        title: "Big Idea",
-        description: "Create a big idea for the project.",
-        status: "In Progress",
-        createdBy: "User  B",
-        dueDate: "May 5, 2025",
-        createdDate: "May 1, 2025 12:00",
-        link: "https://www.example.com/big-idea",
-        file: "empty",
-      },
-      // Add more details for other dates as needed
-    };
-    return details[date] || {};
+    setPopupData({});
   };
 
   return (
     <>
       <meta charSet="utf-8" />
       <meta content="width=device-width, initial-scale=1" name="viewport" />
-      <title>Planify - Calender</title>
+      <title>Planify - Calendar</title>
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
         rel="stylesheet"
@@ -251,19 +257,37 @@ function App() {
 
             <div className="calendar-header">
               <div className="month-nav" role="group">
-                <button aria-label="Previous month" className="nav-arrow" tabIndex="0" type="button">
+                <button
+                  aria-label="Previous month"
+                  className="nav-arrow"
+                  tabIndex="0"
+                  type="button"
+                >
                   <i className="fas fa-chevron-left"></i>
                 </button>
-                <div aria-atomic="true" aria-live="polite" className="month-title">
+                <div
+                  aria-atomic="true"
+                  aria-live="polite"
+                  className="month-title"
+                >
                   May 2025
                 </div>
-                <button aria-label="Next month" className="nav-arrow" tabIndex="0" type="button">
+                <button
+                  aria-label="Next month"
+                  className="nav-arrow"
+                  tabIndex="0"
+                  type="button"
+                >
                   <i className="fas fa-chevron-right"></i>
                 </button>
               </div>
             </div>
 
-            <table aria-label="Calendar for May 2025" className="calendar-grid" role="grid">
+            <table
+              aria-label="Calendar for May 2025"
+              className="calendar-grid"
+              role="grid"
+            >
               <thead>
                 <tr>
                   <th scope="col">Sunday</th>
@@ -289,7 +313,13 @@ function App() {
                   <td onClick={() => openPopup("2025-05-02")}>
                     <div className="day-number">2</div>
                     <div className="event-list">
-                      <div className="event event-blue" title="Interview" id="task-interview">Interview</div>
+                      <div
+                        className="event event-blue"
+                        title="Interview"
+                        id="task-interview"
+                      >
+                        Interview
+                      </div>
                     </div>
                   </td>
                   <td onClick={() => openPopup("2025-05-03")}>
@@ -297,7 +327,7 @@ function App() {
                     <div className="event-list"></div>
                   </td>
                 </tr>
-              
+
                 {/* Week 2 */}
                 <tr>
                   <td onClick={() => openPopup("2025-05-04")}>
@@ -307,8 +337,20 @@ function App() {
                   <td onClick={() => openPopup("2025-05-05")}>
                     <div className="day-number">5</div>
                     <div className="event-list">
-                      <div className="event event-blue" title="Big Idea" id="task-big-idea">Big Idea</div>
-                      <div className="event event-blue" title="Work Planning" id="task-planning">Work Planning</div>
+                      <div
+                        className="event event-blue"
+                        title="Big Idea"
+                        id="task-big-idea"
+                      >
+                        Big Idea
+                      </div>
+                      <div
+                        className="event event-blue"
+                        title="Work Planning"
+                        id="task-planning"
+                      >
+                        Work Planning
+                      </div>
                     </div>
                   </td>
                   <td onClick={() => openPopup("2025-05-06")}>
@@ -330,11 +372,17 @@ function App() {
                   <td onClick={() => openPopup("2025-05-10")}>
                     <div className="day-number">10</div>
                     <div className="event-list">
-                      <div className="event event-green" title="User  Flow" id="task-user-flow">User  Flow</div>
+                      <div
+                        className="event event-green"
+                        title="User  Flow"
+                        id="task-user-flow"
+                      >
+                        User Flow
+                      </div>
                     </div>
                   </td>
                 </tr>
-              
+
                 {/* Week 3 */}
                 <tr>
                   <td onClick={() => openPopup("2025-05-11")}>
@@ -348,13 +396,21 @@ function App() {
                   <td onClick={() => openPopup("2025-05-13")}>
                     <div className="day-number">13</div>
                     <div className="event-list">
-                      <div className="event event-red" title="Call" id="task-call">Call</div>
+                      <div
+                        className="event event-red"
+                        title="Call"
+                        id="task-call"
+                      >
+                        Call
+                      </div>
                     </div>
                   </td>
                   <td onClick={() => openPopup("2025-05-14")}>
                     <div className="day-number">14</div>
                     <div className="event-list">
-                      <div className="event event-red" title="HR" id="task-hr">HR</div>
+                      <div className="event event-red" title="HR" id="task-hr">
+                        HR
+                      </div>
                     </div>
                   </td>
                   <td onClick={() => openPopup("2025-05-15")}>
@@ -370,7 +426,7 @@ function App() {
                     <div className="event-list"></div>
                   </td>
                 </tr>
-              
+
                 {/* Week 4 */}
                 <tr>
                   <td onClick={() => openPopup("2025-05-18")}>
@@ -380,7 +436,13 @@ function App() {
                   <td onClick={() => openPopup("2025-05-19")}>
                     <div className="day-number">19</div>
                     <div className="event-list">
-                      <div className="event event-purple" title="Loft" id="task-loft">Loft</div>
+                      <div
+                        className="event event-purple"
+                        title="Loft"
+                        id="task-loft"
+                      >
+                        Loft
+                      </div>
                     </div>
                   </td>
                   <td onClick={() => openPopup("2025-05-20")}>
@@ -404,7 +466,7 @@ function App() {
                     <div className="event-list"></div>
                   </td>
                 </tr>
-              
+
                 {/* Week 5 */}
                 <tr>
                   <td onClick={() => openPopup("2025-05-25")}>
@@ -441,44 +503,25 @@ function App() {
 
             {/* Popup Overlay */}
             {popupVisible && (
-              <div className="popup-overlay">
-                <div className="popup-card">
-                  <h2 className="popup-title">{popupDetails.title}</h2>
-                  <p className="popup-description">{popupDetails.description}</p>
-
-                  <div className="popup-detail">
-                    <div className="popup-row">
-                      <span className="icon">🕒</span>
-                      <span>Status</span>
-                      <span className="status-circle">{popupDetails.status}</span>
-                    </div>
-                    <div className="popup-row">
-                      <span className="icon">👤</span>
-                      <span>Created by</span>
-                      <img src="https://i.pravatar.cc/24" alt="User " className="avatar" />
-                    </div>
-                    <div className="popup-row">
-                      <span className="icon">📅</span>
-                      <span>Due Date</span>
-                      <span className="value">{popupDetails.dueDate}</span>
-                    </div>
-                    <div className="popup-row">
-                      <span className="icon">⏰</span>
-                      <span>Created Date</span>
-                      <span className="value">{popupDetails.createdDate}</span>
-                    </div>
-                    <div className="popup-row">
-                      <span className="icon">🔗</span>
-                      <span>Link</span>
-                      <a href={popupDetails.link} className="value" target="_blank" rel="noopener noreferrer">{popupDetails.link}</a>
-                    </div>
-                    <div className="popup-row">
-                      <span className="icon">📁</span>
-                      <span>File</span>
-                      <span className="value">{popupDetails.file}</span>
-                    </div>
+              <div className="modal" style={{ display: "flex" }}>
+                <div className="modal-content">
+                  <span className="close-btn" onClick={closePopup}>&times;</span>
+                  <h2>{popupData.title}</h2>
+                  <p>{popupData.description}</p>
+                  <div className="task-info">
+                    <p><strong>Status:</strong> {popupData.status}</p>
+                    <p><strong>Created by:</strong> <img src={popupData.createdBy}alt="User " style={{ borderRadius: "50%", verticalAlign: "middle", width: 24, height: 24 }} /></p>
+                    <p><strong>Due Date:</strong> {popupData.dueDate}</p>
+                    <p><strong>Created Date:</strong> {popupData.createdDate}</p>
+                    <p><strong>Link:</strong> 
+                      {popupData.link ? (
+                        <a href={popupData.link} target="_blank" rel="noreferrer">Link</a>
+                      ) : (
+                        "No link available"
+                      )}
+                    </p>
+                    <p><strong>File:</strong> {popupData.file}</p>
                   </div>
-                  <button onClick={closePopup} className="btn btn-primary mt-3">Close</button>
                 </div>
               </div>
             )}
@@ -490,4 +533,3 @@ function App() {
 }
 
 export default App;
-
