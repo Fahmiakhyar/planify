@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
+import Sidebar from "../components/sidebar";
 import "../pages/kalender.css";
 
 const taskDetails = {
@@ -9,8 +11,8 @@ const taskDetails = {
     createdBy: "img/profile.png",
     dueDate: "May 2, 2025",
     createdDate: "April 30, 2025",
-    link: "https://www.example.com/interview", // Ensure this link is valid
-    file: "empty"
+    link: "https://www.example.com/interview",
+    file: "empty",
   },
   "2025-05-05": {
     title: "Big Idea",
@@ -20,7 +22,7 @@ const taskDetails = {
     dueDate: "May 5, 2025",
     createdDate: "May 1, 2025",
     link: "https://www.example.com/big-idea",
-    file: "empty"
+    file: "empty",
   },
   "2025-05-10": {
     title: "User  Flow",
@@ -30,8 +32,8 @@ const taskDetails = {
     dueDate: "May 10, 2025",
     createdDate: "May 4, 2025",
     link: "https://www.example.com/user-flow",
-    file: "empty"
-  }
+    file: "empty",
+  },
 };
 
 function App() {
@@ -40,6 +42,13 @@ function App() {
   const [, setActiveMenuId] = useState(null);
   const [popupVisible, setPopupVisible] = useState(false);
   const [popupData, setPopupData] = useState({});
+  const [taskInputVisible, setTaskInputVisible] = useState(false);
+  const [currentDate, setCurrentDate] = useState("");
+  const [newTask, setNewTask] = useState({
+    name: "",
+    description: "",
+    dueDate: "",
+  });
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -68,12 +77,30 @@ function App() {
     if (data) {
       setPopupData(data);
       setPopupVisible(true);
+    } else {
+      setCurrentDate(date);
+      setTaskInputVisible(true);
     }
   };
 
   const closePopup = () => {
     setPopupVisible(false);
     setPopupData({});
+  };
+
+  const handleSaveTask = () => {
+    taskDetails[currentDate] = {
+      title: newTask.name,
+      description: newTask.description,
+      status: "●",
+      createdBy: "img/profile.png",
+      dueDate: newTask.dueDate,
+      createdDate: new Date().toLocaleDateString(),
+      link: "",
+      file: "empty",
+    };
+    setTaskInputVisible(false);
+    setNewTask({ name: "", description: "", dueDate: "" }); // Reset form
   };
 
   return (
@@ -128,43 +155,7 @@ function App() {
           className={`sidebar-right ${showRightSidebar ? "show" : ""}`}
           aria-hidden={!showRightSidebar}
         >
-          <div>
-            <ul>
-              <li className="active">
-                <i className="fas fa-home"></i> Dashboard
-              </li>
-              <li>
-                <i className="fas fa-clock"></i> Recent
-              </li>
-              <li>
-                <i className="fas fa-folder"></i> Shared
-              </li>
-              <li>
-                <i className="fas fa-star"></i> Favorites
-              </li>
-            </ul>
-
-            <div className="premium-box">
-              <i className="fas fa-gem mb-2"></i>
-              <p className="mb-1">
-                <strong>Current plan:</strong>
-                <br />
-                Free Trial
-              </p>
-              <small>Upgrade to Premium to get exclusive features</small>
-              <button className="btn btn-sm w-100 rounded-pill mt-2">
-                ⚡ Go Premium
-              </button>
-            </div>
-            <ul>
-              <li className="bottom-menu">
-                <i className="fas fa-cog"></i> Setting
-              </li>
-              <li>
-                <i className="fas fa-sign-out-alt"></i> Logout
-              </li>
-            </ul>
-          </div>
+          <Sidebar />
         </div>
 
         <main className="content flex-grow-1" role="main">
@@ -226,33 +217,55 @@ function App() {
             </div>
 
             <nav aria-label="Workbook tabs" className="tab-nav" role="tablist">
-              {["Calendar", "Tasks", "Notes"].map((tab) => (
-                <div
-                  key={tab}
-                  className={`tab-item ${activeTab === tab ? "active" : ""}`}
-                  onClick={() => handleTabClick(tab)}
-                  role="tab"
-                  aria-selected={activeTab === tab}
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      handleTabClick(tab);
-                    }
-                  }}
-                >
-                  <i
-                    className={`fas fa-${
-                      tab === "Calendar"
-                        ? "calendar"
-                        : tab === "Tasks"
-                        ? "tasks"
-                        : "sticky-note"
-                    }`}
-                    style={{ marginRight: "6px" }}
-                  />
-                  {tab}
-                </div>
-              ))}
+              {["Calendar", "Tasks", "Notes"].map((tab) => {
+                const iconClass =
+                  tab === "Calendar"
+                    ? "calendar"
+                    : tab === "Tasks"
+                    ? "tasks"
+                    : "sticky-note";
+
+                const tabContent = (
+                  <div
+                    key={tab}
+                    className={`tab-item ${activeTab === tab ? "active" : ""}`}
+                    onClick={() => handleTabClick(tab)}
+                    role="tab"
+                    aria-selected={activeTab === tab}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        handleTabClick(tab);
+                      }
+                    }}
+                  >
+                    <i
+                      className={`fas fa-${iconClass}`}
+                      style={{ marginRight: "6px" }}
+                    />
+                    {tab}
+                  </div>
+                );
+
+                // Jika tab adalah "Tasks", bungkus dengan <Link>
+                return tab === "Tasks" ? (
+                  <Link
+                    to="/Task"
+                    key={tab}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    {tabContent}
+                  </Link>
+                ) : (
+                  <Link
+                    to="/Notes"
+                    key={tab}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    {tabContent}
+                  </Link>
+                );
+              })}
             </nav>
 
             <div className="calendar-header">
@@ -501,27 +514,130 @@ function App() {
               </tbody>
             </table>
 
-            {/* Popup Overlay */}
+            {/* Popup Overlay for Task Details */}
             {popupVisible && (
               <div className="modal" style={{ display: "flex" }}>
                 <div className="modal-content">
-                  <span className="close-btn" onClick={closePopup}>&times;</span>
+                  <span className="close-btn" onClick={closePopup}>
+                    &times;
+                  </span>
                   <h2>{popupData.title}</h2>
                   <p>{popupData.description}</p>
                   <div className="task-info">
-                    <p><strong>Status:</strong> {popupData.status}</p>
-                    <p><strong>Created by:</strong> <img src={popupData.createdBy}alt="User " style={{ borderRadius: "50%", verticalAlign: "middle", width: 24, height: 24 }} /></p>
-                    <p><strong>Due Date:</strong> {popupData.dueDate}</p>
-                    <p><strong>Created Date:</strong> {popupData.createdDate}</p>
-                    <p><strong>Link:</strong> 
+                    <p>
+                      <strong>Status:</strong> {popupData.status}
+                    </p>
+                    <p>
+                      <strong>Created by:</strong>{" "}
+                      <img
+                        src={popupData.createdBy}
+                        alt="User  "
+                        style={{
+                          borderRadius: "50%",
+                          verticalAlign: "middle",
+                          width: 24,
+                          height: 24,
+                        }}
+                      />
+                    </p>
+                    <p>
+                      <strong>Due Date:</strong> {popupData.dueDate}
+                    </p>
+                    <p>
+                      <strong>Created Date:</strong> {popupData.createdDate}
+                    </p>
+                    <p>
+                      <strong>Link:</strong>
                       {popupData.link ? (
-                        <a href={popupData.link} target="_blank" rel="noreferrer">Link</a>
+                        <a
+                          href={popupData.link}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Link
+                        </a>
                       ) : (
                         "No link available"
                       )}
                     </p>
-                    <p><strong>File:</strong> {popupData.file}</p>
+                    <p>
+                      <strong>File:</strong> {popupData.file}
+                    </p>
                   </div>
+                </div>
+              </div>
+            )}
+
+            {/* Task Input Form Overlay */}
+            {taskInputVisible && (
+              <div className="modal2" style={{ display: "flex" }}>
+                <div className="modal-content2">
+                  <span
+                    className="close-btn"
+                    onClick={() => setTaskInputVisible(false)}
+                  >
+                    &times;
+                  </span>
+                  <h2>Add New Task</h2>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleSaveTask();
+                    }}
+                  >
+                    <div className="mb-3">
+                      <label htmlFor="taskName" className="form-label">
+                        Task Name
+                      </label>
+                      <input
+                        type="text"
+                        id="taskName"
+                        className="form-control"
+                        value={newTask.name}
+                        onChange={(e) =>
+                          setNewTask({ ...newTask, name: e.target.value })
+                        }
+                        required
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="taskDescription" className="form-label">
+                        Description
+                      </label>
+                      <textarea
+                        id="taskDescription"
+                        className="form-control"
+                        value={newTask.description}
+                        onChange={(e) =>
+                          setNewTask({
+                            ...newTask,
+                            description: e.target.value,
+                          })
+                        }
+                        required
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="taskDueDate" className="form-label">
+                        Due Date
+                      </label>
+                      <input
+                        type="date"
+                        id="taskDueDate"
+                        className="form-control"
+                        value={newTask.dueDate}
+                        onChange={(e) =>
+                          setNewTask({ ...newTask, dueDate: e.target.value })
+                        }
+                        required
+                      />
+                    </div>
+                    <div className="text-end">
+                      <button type="submit" className="btn btn-primary">
+                        Save Task
+                      </button>
+                    </div>
+                  </form>
                 </div>
               </div>
             )}

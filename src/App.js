@@ -1,6 +1,7 @@
 import "./App.css";
 import { useState, useRef, useEffect } from "react";
-
+import { Link } from "react-router-dom";
+import Sidebar from "./components/sidebar";
 
 function App() {
   const [showRightSidebar, setShowRightSidebar] = useState(false);
@@ -150,43 +151,7 @@ function App() {
           className={`sidebar-right ${showRightSidebar ? "show" : ""}`}
           aria-hidden={!showRightSidebar}
         >
-          <div>
-            <ul>
-              <li className="active">
-                <i className="fas fa-home"></i> Dashboard
-              </li>
-              <li>
-                <i className="fas fa-clock"></i> Recent
-              </li>
-              <li>
-                <i className="fas fa-folder"></i> Shared
-              </li>
-              <li>
-                <i className="fas fa-star"></i> Favorites
-              </li>
-            </ul>
-
-            <div className="premium-box">
-              <i className="fas fa-gem mb-2"></i>
-              <p className="mb-1">
-                <strong>Current plan:</strong>
-                <br />
-                Free Trial
-              </p>
-              <small>Upgrade to Premium to get exclusive features</small>
-              <button className="btn btn-sm w-100 rounded-pill mt-2">
-                ⚡ Go Premium
-              </button>
-            </div>
-            <ul>
-              <li className="bottom-menu">
-                <i className="fas fa-cog"></i> Setting
-              </li>
-              <li>
-                <i className="fas fa-sign-out-alt"></i> Logout
-              </li>
-            </ul>
-          </div>
+          <Sidebar/>
         </div>
 
         <main className="content flex-grow-1" role="main">
@@ -248,32 +213,52 @@ function App() {
             </div>
 
             <nav aria-label="Workbook tabs" className="tab-nav" role="tablist">
-              {["Calendar", "Tasks", "Notes"].map((tab) => (
-                <div
-                  key={tab}
-                  className={`tab-item ${activeTab === tab ? "active" : ""}`}
-                  onClick={() => handleTabClick(tab)}
-                  role="tab"
-                  aria-selected={activeTab === tab}
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      handleTabClick(tab);
-                    }
-                  }}
-                >
-                  <i
-                    className={`fas fa-${
-                      tab === "Calendar"
-                        ? "calendar"
-                        : tab === "Tasks"
-                        ? "tasks"
-                        : "sticky-note"
-                    }`}
-                  />
-                  {tab}
-                </div>
-              ))}
+              {["Calendar", "Tasks", "Notes"].map((tab) => {
+                const iconClass =
+                  tab === "Calendar"
+                    ? "calendar"
+                    : tab === "Tasks"
+                    ? "tasks"
+                    : "sticky-note";
+
+                const tabContent = (
+                  <div
+                    key={tab}
+                    className={`tab-item ${activeTab === tab ? "active" : ""}`}
+                    onClick={() => handleTabClick(tab)}
+                    role="tab"
+                    aria-selected={activeTab === tab}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        handleTabClick(tab);
+                      }
+                    }}
+                  >
+                    <i className={`fas fa-${iconClass}`} />
+                    {tab}
+                  </div>
+                );
+
+                // Bungkus tab "Calendar" dengan Link ke /kalender
+                return tab === "Calendar" ? (
+                  <Link
+                    to="/kalender"
+                    key={tab}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    {tabContent}
+                  </Link>
+                ) : (
+                   <Link
+                    to="/Task"
+                    key={tab}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    {tabContent}
+                  </Link>
+                );
+              })}
             </nav>
 
             <div className="notes-container">
@@ -334,7 +319,7 @@ function App() {
                                 fontSize: "14px",
                                 color: "#333",
                                 transition: "background-color 0.2s",
-                                 zIndex: "10000",
+                                zIndex: "10000",
                               }}
                               onMouseEnter={(e) =>
                                 (e.target.style.backgroundColor = "#f5f5f5")
@@ -360,76 +345,87 @@ function App() {
         </main>
       </div>
 
-<div
-  className={`custom-popup-overlay ${showAddNotePopup ? 'active' : ''}`}
-  onClick={() => setShowAddNotePopup(false)} // Klik area luar menutup popup
->
-  <div
-    className="custom-popup-box"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="popupTitle"
-    onClick={(e) => e.stopPropagation()} // Mencegah klik dalam popup menutup
-  >
-    <h5 className="custom-popup-title" id="popupTitle">
-      Add Note
-    </h5>
+      <div
+        className={`custom-popup-overlay ${showAddNotePopup ? "active" : ""}`}
+        onClick={() => setShowAddNotePopup(false)} // Klik area luar menutup popup
+      >
+        <div
+          className="custom-popup-box"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="popupTitle"
+          onClick={(e) => e.stopPropagation()} // Mencegah klik dalam popup menutup
+        >
+          <h5 className="custom-popup-title" id="popupTitle">
+            Add Note
+          </h5>
 
-    <form
-      className="popup-form"
-      onSubmit={(e) => {
-        e.preventDefault();
-        saveNote();
-      }}
-      id="noteForm"
-    >
-      <div className="custom-form-group">
-        <label htmlFor="noteTitle" className="custom-label">Title</label>
-        <input
-          type="text"
-          id="noteTitle"
-          className="custom-input"
-          value={noteTitle}
-          onChange={(e) => setNoteTitle(e.target.value)}
-          required
-          autoFocus
-        />
-      </div>
+          <form
+            className="popup-form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              saveNote();
+            }}
+            id="noteForm"
+          >
+            <div className="custom-form-group">
+              <label htmlFor="noteTitle" className="custom-label">
+                Title
+              </label>
+              <input
+                type="text"
+                id="noteTitle"
+                className="custom-input"
+                value={noteTitle}
+                onChange={(e) => setNoteTitle(e.target.value)}
+                required
+                autoFocus
+              />
+            </div>
 
-      <div className="custom-form-group">
-        <label htmlFor="noteContent" className="custom-label">Content</label>
-        <textarea
-          id="noteContent"
-          className="custom-input"
-          value={noteContent}
-          onChange={(e) => setNoteContent(e.target.value)}
-        />
-      </div>
+            <div className="custom-form-group">
+              <label htmlFor="noteContent" className="custom-label">
+                Content
+              </label>
+              <textarea
+                id="noteContent"
+                className="custom-input"
+                value={noteContent}
+                onChange={(e) => setNoteContent(e.target.value)}
+              />
+            </div>
 
-      <div className="custom-popup-actions1">
-        <div className="popup-tools">
-          <button type="button" className="popup-tool" title="Add Emoji">
-            <i className="far fa-smile"></i>
-          </button>
-          <button type="button" className="popup-tool" title="Add Checklist">
-            <i className="fas fa-tasks"></i>
-          </button>
-          <button type="button" className="popup-tool" title="Add Image">
-            <i className="far fa-image"></i>
-          </button>
-          <button type="button" className="popup-tool" title="Add Reminder">
-            <i className="far fa-bell"></i>
-          </button>
+            <div className="custom-popup-actions1">
+              <div className="popup-tools">
+                <button type="button" className="popup-tool" title="Add Emoji">
+                  <i className="far fa-smile"></i>
+                </button>
+                <button
+                  type="button"
+                  className="popup-tool"
+                  title="Add Checklist"
+                >
+                  <i className="fas fa-tasks"></i>
+                </button>
+                <button type="button" className="popup-tool" title="Add Image">
+                  <i className="far fa-image"></i>
+                </button>
+                <button
+                  type="button"
+                  className="popup-tool"
+                  title="Add Reminder"
+                >
+                  <i className="far fa-bell"></i>
+                </button>
+              </div>
+
+              <button type="button" className="btn-save" onClick={saveNote}>
+                Save
+              </button>
+            </div>
+          </form>
         </div>
-
-        <button type="button" className="btn-save" onClick={saveNote}>
-          Save
-        </button>
       </div>
-    </form>
-  </div>
-</div>
-
     </>
   );
 }

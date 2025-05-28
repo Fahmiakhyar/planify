@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import '../pages/editprofile.css';
+import Sidebar from "../components/setting/sidebar";
 
 const AccountSettings = () => {
     const [newPasswordVisible, setNewPasswordVisible] = useState(false);
@@ -37,28 +38,7 @@ const AccountSettings = () => {
             <div className="row">
                 {/* Sidebar */}
                 <div className="col-md-3 mb-4">
-                    <div className="sidebar">
-                        <button className="sidebar-item active">
-                            <div className="sidebar-icon">👤</div>
-                            Profile
-                        </button>
-                        <button className="sidebar-item">
-                            <div className="sidebar-icon">⬆️</div>
-                            Upgrade
-                        </button>
-                        <button className="sidebar-item">
-                            <div className="sidebar-icon">👥</div>
-                            My team
-                        </button>
-                        <button className="sidebar-item">
-                            <div className="sidebar-icon">🔔</div>
-                            Notification
-                        </button>
-                        <button className="sidebar-item">
-                            <div className="sidebar-icon">🌐</div>
-                            Language & Region
-                        </button>
-                    </div>
+                    <Sidebar/>
                 </div>
 
                 {/* Main Content */}

@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
+import Sidebar from "../components/sidebar";
 import "../pages/task.css";
 
 function App() {
@@ -143,43 +145,7 @@ function App() {
           className={`sidebar-right ${showRightSidebar ? "show" : ""}`}
           aria-hidden={!showRightSidebar}
         >
-          <div>
-            <ul>
-              <li className="active">
-                <i className="fas fa-home"></i> Dashboard
-              </li>
-              <li>
-                <i className="fas fa-clock"></i> Recent
-              </li>
-              <li>
-                <i className="fas fa-folder"></i> Shared
-              </li>
-              <li>
-                <i className="fas fa-star"></i> Favorites
-              </li>
-            </ul>
-
-            <div className="premium-box">
-              <i className="fas fa-gem mb-2"></i>
-              <p className="mb-1">
-                <strong>Current plan:</strong>
-                <br />
-                Free Trial
-              </p>
-              <small>Upgrade to Premium to get exclusive features</small>
-              <button className="btn btn-sm w-100 rounded-pill mt-2">
-                ⚡ Go Premium
-              </button>
-            </div>
-            <ul>
-              <li className="bottom-menu">
-                <i className="fas fa-cog"></i> Setting
-              </li>
-              <li>
-                <i className="fas fa-sign-out-alt"></i> Logout
-              </li>
-            </ul>
-          </div>
+          <Sidebar/>
         </div>
 
         <main className="content flex-grow-1" role="main">
@@ -219,28 +185,49 @@ function App() {
             </div>
 
             <nav className="tab-nav" role="tablist">
-              {["Calendar", "Tasks", "Notes"].map((tab) => (
-                <div
-                  key={tab}
-                  className={`tab-item ${activeTab === tab ? "active" : ""}`}
-                  onClick={() => handleTabClick(tab)}
-                  role="tab"
-                  aria-selected={activeTab === tab}
-                  tabIndex={0}
-                >
-                  <i
-                    className={`fas fa-${
-                      tab === "Calendar"
-                        ? "calendar"
-                        : tab === "Tasks"
-                        ? "tasks"
-                        : "sticky-note"
-                    }`}
-                    style={{ marginRight: "6px" }}
-                  />
-                  {tab}
-                </div>
-              ))}
+              {["Calendar", "Tasks", "Notes"].map((tab) => {
+                const iconClass =
+                  tab === "Calendar"
+                    ? "calendar"
+                    : tab === "Tasks"
+                    ? "tasks"
+                    : "sticky-note";
+
+                const tabContent = (
+                  <div
+                    key={tab}
+                    className={`tab-item ${activeTab === tab ? "active" : ""}`}
+                    onClick={() => handleTabClick(tab)}
+                    role="tab"
+                    aria-selected={activeTab === tab}
+                    tabIndex={0}
+                  >
+                    <i
+                      className={`fas fa-${iconClass}`}
+                      style={{ marginRight: "6px" }}
+                    />
+                    {tab}
+                  </div>
+                );
+
+                return tab === "Calendar" ? (
+                  <Link
+                    to="/kalender"
+                    key={tab}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    {tabContent}
+                  </Link>
+                ) : (
+                  <Link
+                    to="/Notes"
+                    key={tab}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    {tabContent}
+                  </Link>
+                );
+              })}
             </nav>
 
             <div className="kanban-wrapper">
