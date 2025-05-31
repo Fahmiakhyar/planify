@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import "../pages/task.css";
@@ -6,49 +6,22 @@ import "../pages/task.css";
 function App() {
   const [showRightSidebar, setShowRightSidebar] = useState(false);
   const [activeTab, setActiveTab] = useState("Tasks");
-  const [popupVisible, setPopupVisible] = useState(false);
-  const [taskName, setTaskName] = useState("");
-  const [taskDescription, setTaskDescription] = useState("");
-  const [dueDate, setDueDate] = useState("");
-  const [reminder, setReminder] = useState("1 Day before");
+  const [taskInputVisible, setTaskInputVisible] = useState(false);
+  const [newTask, setNewTask] = useState({
+    name: "",
+    description: "",
+    dueDate: "",
+    reminderDate: "",
+    reminderTime: "",
+  });
   const [tasks, setTasks] = useState({
     "To Do": [],
-    " Doing": [],
+    Doing: [],
     Done: [],
   });
   const [currentColumn, setCurrentColumn] = useState("To Do");
-  const menuRef = useRef(null);
-  const popupRef = useRef(null);
-  const [, setActiveMenuId] = useState(null);
-
-  useEffect(() => {
-    function handleClickOutsideMenu(event) {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setActiveMenuId(null);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutsideMenu);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutsideMenu);
-    };
-  }, []);
-
-  useEffect(() => {
-    function handleClickOutsidePopup(event) {
-      if (popupRef.current && !popupRef.current.contains(event.target)) {
-        closePopup();
-      }
-    }
-
-    if (popupVisible) {
-      document.addEventListener("mousedown", handleClickOutsidePopup);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutsidePopup);
-    };
-  }, [popupVisible]);
+  const fileInputRef = useRef(null);
+  const linkInputRef = useRef(null);
 
   const toggleRightSidebar = () => {
     setShowRightSidebar(!showRightSidebar);
@@ -60,30 +33,26 @@ function App() {
 
   const openPopup = (column) => {
     setCurrentColumn(column);
-    setPopupVisible(true);
+    setTaskInputVisible(true);
   };
 
   const closePopup = () => {
-    setPopupVisible(false);
-    setTaskName("");
-    setTaskDescription("");
-    setDueDate("");
-    setReminder("1 Day before");
+    setTaskInputVisible(false);
+    setNewTask({
+      name: "",
+      description: "",
+      dueDate: "",
+      reminderDate: "",
+      reminderTime: "",
+    });
   };
 
   const saveTask = () => {
-    const newTask = {
-      name: taskName,
-      description: taskDescription,
-      dueDate: dueDate,
-      reminder: reminder,
-    };
-
+    const taskToSave = { ...newTask };
     setTasks((prevTasks) => ({
       ...prevTasks,
-      [currentColumn]: [...prevTasks[currentColumn], newTask],
+      [currentColumn]: [...prevTasks[currentColumn], taskToSave],
     }));
-
     closePopup();
   };
 
@@ -99,7 +68,7 @@ function App() {
       <meta content="width=device-width, initial-scale=1" name="viewport" />
       <title>Planify - Tasks</title>
       <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
         rel="stylesheet"
       />
       <link
@@ -145,7 +114,7 @@ function App() {
           className={`sidebar-right ${showRightSidebar ? "show" : ""}`}
           aria-hidden={!showRightSidebar}
         >
-          <Sidebar/>
+          <Sidebar />
         </div>
 
         <main className="content flex-grow-1" role="main">
@@ -156,7 +125,7 @@ function App() {
               </div>
               Planify
             </div>
-            <nav aria-label="User actions" className="nav-actions">
+            <nav aria-label="User  actions" className="nav-actions">
               <button className="btn-icon" aria-label="Message">
                 <i className="far fa-envelope"></i>
               </button>
@@ -172,7 +141,7 @@ function App() {
               <img
                 className="user-avatar"
                 src="https://storage.googleapis.com/a1aa/image/b1775588-94f7-4a59-b686-0a1dddb0891b.jpg"
-                alt="User Avatar"
+                alt="User  Avatar"
                 width="40"
                 height="40"
               />
@@ -245,7 +214,7 @@ function App() {
                         </div>
                         <div className="task-due-date">Due: {task.dueDate}</div>
                         <div className="task-reminder">
-                          Reminder: {task.reminder}
+                          Reminder: {task.reminderDate}
                         </div>
                         <button
                           className="btn btn-sm btn-danger mt-2"
@@ -269,73 +238,140 @@ function App() {
         </main>
       </div>
 
-      {/* Popup Overlay */}
-      {popupVisible && (
-        <div className="custom-popup-overlay2">
-          <div className="custom-popup-box" ref={popupRef}>
-            <h5 className="custom-popup-title">Add Task - {currentColumn}</h5>
+      {taskInputVisible && (
+        <div className="modal2" style={{ display: "flex" }}>
+          <div className="modal-content2">
+            <span
+              className="close-btn"
+              onClick={closePopup}
+              style={{ cursor: "pointer" }}
+            >
+              &times;
+            </span>
+            <h2>Add New Task</h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                saveTask();
+              }}
+            >
+              <div className="mb-3">
+                <label htmlFor="taskName" className="form-label">
+                  Task Name
+                </label>
+                <input
+                  type="text"
+                  id="taskName"
+                  className="form-control"
+                  value={newTask.name}
+                  onChange={(e) =>
+                    setNewTask({ ...newTask, name: e.target.value })
+                  }
+                  required
+                />
+              </div>
 
-            <div className="custom-form-group">
-              <label htmlFor="taskName" className="custom-label">
-                Task Name
-              </label>
-              <input
-                type="text"
-                id="taskName"
-                className="custom-input"
-                value={taskName}
-                onChange={(e) => setTaskName(e.target.value)}
-              />
-            </div>
+              <div className="mb-3">
+                <label htmlFor="taskDescription" className="form-label">
+                  Description
+                </label>
+                <textarea
+                  id="taskDescription"
+                  className="form-control"
+                  value={newTask.description}
+                  onChange={(e) =>
+                    setNewTask({ ...newTask, description: e.target.value })
+                  }
+                  required
+                />
+              </div>
 
-            <div className="custom-form-group">
-              <label htmlFor="taskDescription" className="custom-label">
-                Description
-              </label>
-              <textarea
-                id="taskDescription"
-                className="custom-input"
-                rows="2"
-                value={taskDescription}
-                onChange={(e) => setTaskDescription(e.target.value)}
-              ></textarea>
-            </div>
+              <div className="mb-3">
+                <label htmlFor="taskDueDate" className="form-label">
+                  Due Date
+                </label>
+                <input
+                  type="date"
+                  id="taskDueDate"
+                  className="form-control"
+                  value={newTask.dueDate}
+                  onChange={(e) =>
+                    setNewTask({ ...newTask, dueDate: e.target.value })
+                  }
+                  required
+                />
+              </div>
 
-            <div className="custom-form-group">
-              <label htmlFor="dueDate" className="custom-label">
-                Due Date
-              </label>
-              <input
-                type="date"
-                id="dueDate"
-                className="custom-input"
-                value={dueDate}
-                onChange={(e) => setDueDate(e.target.value)}
-              />
-            </div>
+              <div className="mb-3">
+                <label htmlFor="taskReminderDate" className="form-label">
+                  Due Date Reminder
+                </label>
+                <input
+                  type="date"
+                  id="taskReminderDate"
+                  className="form-control"
+                  value={newTask.reminderDate}
+                  onChange={(e) =>
+                    setNewTask({ ...newTask, reminderDate: e.target.value })
+                  }
+                  required
+                />
+              </div>
 
-            <div className="custom-form-group">
-              <label htmlFor="reminder" className="custom-label">
-                Reminder
-              </label>
-              <select
-                id="reminder"
-                className="custom-input"
-                value={reminder}
-                onChange={(e) => setReminder(e.target.value)}
-              >
-                <option value="1 Day before">1 Day before</option>
-                <option value="2 Days before">2 Days before</option>
-                <option value="1 Week before">1 Week before</option>
-                <option value="On the day">On the day</option>
-              </select>
-            </div>
+              <div className="mb-3">
+                <label htmlFor="taskReminderTime" className="form-label">
+                  Reminder Time
+                </label>
+                <input
+                  type="time"
+                  id="taskReminderTime"
+                  className="form-control"
+                  value={newTask.reminderTime}
+                  onChange={(e) =>
+                    setNewTask({ ...newTask, reminderTime: e.target.value })
+                  }
+                  required
+                />
+              </div>
 
-            <div className="custom-popup-actions">
-              <button className="btn-save" onClick={saveTask}>
-                Save Task
-              </button>
-            </div>
+              <div className="icon-container mb-3">
+                <i
+                  className="fas fa-file-circle-plus icon"
+                  title="Upload File"
+                  onClick={() => fileInputRef.current.click()}
+                ></i>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    alert(`File selected: ${file?.name}`);
+                  }}
+                />
+
+                <i
+                  className="fas fa-link icon ms-2"
+                  title="Add Link"
+                  onClick={() => linkInputRef.current.focus()}
+                ></i>
+                <input
+                  type="url"
+                  ref={linkInputRef}
+                  placeholder="https://example.com"
+                  className="hidden-link-input"
+                  onChange={(e) => {
+                    alert(`Link entered: ${e.target.value}`);
+                  }}
+                />
+              </div>
+
+              <div className="text-end">
+                <button type="submit" className="btn btn-primary">
+                  Save Task
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

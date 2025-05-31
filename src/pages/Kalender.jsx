@@ -49,6 +49,19 @@ function App() {
     description: "",
     dueDate: "",
   });
+  const fileInputRef = useRef(null);
+  const linkInputRef = useRef(null);
+
+  // Fungsi saat ikon file diklik
+  const handleFileClick = () => {
+    fileInputRef.current.click();
+  };
+
+  // Fungsi saat ikon link diklik
+  const handleLinkClick = () => {
+    linkInputRef.current.focus();
+  };
+
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -517,7 +530,7 @@ function App() {
             {/* Popup Overlay for Task Details */}
             {popupVisible && (
               <div className="modal" style={{ display: "flex" }}>
-                <div className="modal-content">
+                <div className="modal-content2">
                   <span className="close-btn" onClick={closePopup}>
                     &times;
                   </span>
@@ -531,7 +544,7 @@ function App() {
                       <strong>Created by:</strong>{" "}
                       <img
                         src={popupData.createdBy}
-                        alt="User  "
+                        alt="User "
                         style={{
                           borderRadius: "50%",
                           verticalAlign: "middle",
@@ -575,6 +588,7 @@ function App() {
                   <span
                     className="close-btn"
                     onClick={() => setTaskInputVisible(false)}
+                    style={{ cursor: "pointer" }}
                   >
                     &times;
                   </span>
@@ -582,7 +596,7 @@ function App() {
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      handleSaveTask();
+                      handleSaveTask(newTask);
                     }}
                   >
                     <div className="mb-3">
@@ -600,6 +614,7 @@ function App() {
                         required
                       />
                     </div>
+
                     <div className="mb-3">
                       <label htmlFor="taskDescription" className="form-label">
                         Description
@@ -617,6 +632,7 @@ function App() {
                         required
                       />
                     </div>
+
                     <div className="mb-3">
                       <label htmlFor="taskDueDate" className="form-label">
                         Due Date
@@ -632,6 +648,79 @@ function App() {
                         required
                       />
                     </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="taskReminderDate" className="form-label">
+                        Due Date Reminder
+                      </label>
+                      <input
+                        type="date"
+                        id="taskReminderDate"
+                        className="form-control"
+                        value={newTask.reminderDate}
+                        onChange={(e) =>
+                          setNewTask({
+                            ...newTask,
+                            reminderDate: e.target.value,
+                          })
+                        }
+                        required
+                      />
+                    </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="taskReminderTime" className="form-label">
+                        Reminder Time
+                      </label>
+                      <input
+                        type="time"
+                        id="taskReminderTime"
+                        className="form-control"
+                        value={newTask.reminderTime || ""}
+                        onChange={(e) =>
+                          setNewTask({
+                            ...newTask,
+                            reminderTime: e.target.value,
+                          })
+                        }
+                        required
+                      />
+                    </div>
+
+                    <div className="icon-container">
+                      {/* Ikon Upload File */}
+                      <i
+                        className="fas fa-file-circle-plus icon"
+                        title="Upload File"
+                        onClick={handleFileClick}
+                      ></i>
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        style={{ display: "none" }}
+                        onChange={(e) => {
+                          const file = e.target.files[0];
+                          alert(`File selected: ${file?.name}`);
+                        }}
+                      />
+
+                      {/* Ikon Link */}
+                      <i
+                        className="fas fa-link icon ms-2"
+                        title="Add Link"
+                        onClick={handleLinkClick}
+                      ></i>
+                      <input
+                        type="url"
+                        ref={linkInputRef}
+                        placeholder="https://example.com"
+                        className="hidden-link-input"
+                        onChange={(e) => {
+                          alert(`Link entered: ${e.target.value}`);
+                        }}
+                      />
+                    </div>
+
                     <div className="text-end">
                       <button type="submit" className="btn btn-primary">
                         Save Task

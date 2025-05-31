@@ -41,7 +41,7 @@
 
                 /* Sidebar Styling */
                 .sidebar {
-                    background: white;
+                    background: #e1e8fc;;
                     border-radius: 12px;
                     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
                     border: 1px solid #e5e7eb;
@@ -72,7 +72,7 @@
                 }
 
                 .sidebar-item.active {
-                    background-color: #dbeafe;
+                    background-color: white;
                     color: #2563eb;
                     border: 1px solid #bfdbfe;
                 }
