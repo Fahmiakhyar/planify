@@ -151,17 +151,25 @@ function App() {
           className={`sidebar-right ${showRightSidebar ? "show" : ""}`}
           aria-hidden={!showRightSidebar}
         >
-          <Sidebar/>
+          <Sidebar />
         </div>
 
         <main className="content flex-grow-1" role="main">
           <header className="app-header" role="banner">
-            <div aria-label="Planify logo" className="logo">
-              <div aria-hidden="true" className="logo-icon">
-                <i className="fas fa-calendar-check"> </i>
-              </div>
+            <div
+              aria-label="Planify logo"
+              className="logo d-flex align-items-center"
+            >
+              <img
+                src="/logo%20planify%20new.png"
+                alt="Planify Logo"
+                width="36"
+                height="36"
+                className="me-2"
+              />
               Planify
             </div>
+
             <nav aria-label="User  actions" className="nav-actions">
               <button
                 aria-label="Message"
@@ -250,7 +258,7 @@ function App() {
                     {tabContent}
                   </Link>
                 ) : (
-                   <Link
+                  <Link
                     to="/Task"
                     key={tab}
                     style={{ textDecoration: "none", color: "inherit" }}

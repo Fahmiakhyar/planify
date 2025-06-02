@@ -7,26 +7,30 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [workbooks, setWorkbooks] = useState([
     {
+      id: 1,
       title: "My Planner",
-      image: "https://source.unsplash.com/featured/?planner",
+      image: "/logo%20planify%20new.png",
       createdAt: "21 minutes ago",
     },
     {
+      id: 2,
       title: "Wuling's Workbook",
-      image: "https://source.unsplash.com/featured/?laptop,code",
+      image: "/logo%20planify%20new.png",
       createdAt: "48 minutes ago",
     },
     {
+      id: 3,
       title: "Workbook Group 7",
-      image: "https://source.unsplash.com/featured/?notes,desk",
+      image: "/logo%20planify%20new.png",
       createdAt: "2 hours ago",
     },
   ]);
 
   const [title, setTitle] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [activeMenuId, setActiveMenuId] = useState(null);
   const menuRef = useRef(null);
-  const [, setActiveMenuId] = useState(null);
 
   useEffect(() => {
     function handleClickOutsideMenu(event) {
@@ -50,6 +54,7 @@ function App() {
     setShowModal(false);
     setTitle("");
     setImagePreview(null);
+    setEditingIndex(null);
   };
 
   const handleImageUpload = (e) => {
@@ -60,18 +65,63 @@ function App() {
     }
   };
 
-  const handleCreateWorkbook = (e) => {
+  const handleCreateOrUpdateWorkbook = (e) => {
     e.preventDefault();
     if (!title) return;
 
     const newWorkbook = {
+      id: editingIndex !== null ? workbooks[editingIndex].id : Date.now(),
       title,
       image: imagePreview || "https://source.unsplash.com/featured/?workbook",
-      createdAt: "Just now",
+      createdAt: editingIndex !== null ? "Updated just now" : "Just now",
     };
 
-    setWorkbooks([newWorkbook, ...workbooks]);
+    if (editingIndex !== null) {
+      const updatedWorkbooks = workbooks.map((wb, index) =>
+        index === editingIndex ? newWorkbook : wb
+      );
+      setWorkbooks(updatedWorkbooks);
+    } else {
+      setWorkbooks([newWorkbook, ...workbooks]);
+    }
+
     closeModal();
+  };
+
+  const handleEditWorkbook = (index) => {
+    const workbookToEdit = workbooks[index];
+    setTitle(workbookToEdit.title);
+    setImagePreview(workbookToEdit.image);
+    setEditingIndex(index);
+    openModal();
+  };
+
+  const handleDeleteWorkbook = (index) => {
+    const updatedWorkbooks = workbooks.filter((_, i) => i !== index);
+    setWorkbooks(updatedWorkbooks);
+  };
+
+  const toggleNoteMenu = (id, e) => {
+    e.stopPropagation();
+    setActiveMenuId(activeMenuId === id ? null : id);
+  };
+
+  const handleNoteAction = (action, id) => {
+    const index = workbooks.findIndex((wb) => wb.id === id);
+    switch (action) {
+      case "Edit":
+        handleEditWorkbook(index);
+        break;
+      case "Archived":
+        console.log(`Archived for: ${id}`);
+        break;
+      case "Delete":
+        handleDeleteWorkbook(index);
+        break;
+      default:
+        break;
+    }
+    setActiveMenuId(null);
   };
 
   return (
@@ -131,12 +181,20 @@ function App() {
 
         <main className="content flex-grow-1" role="main">
           <header className="app-header" role="banner">
-            <div aria-label="Planify logo" className="logo">
-              <div aria-hidden="true" className="logo-icon">
-                <i className="fas fa-calendar-check"> </i>
-              </div>
+            <div
+              aria-label="Planify logo"
+              className="logo d-flex align-items-center"
+            >
+              <img
+                src="/logo%20planify%20new.png"
+                alt="Planify Logo"
+                width="36"
+                height="36"
+                className="me-2"
+              />
               Planify
             </div>
+
             <nav aria-label="User  actions" className="nav-actions">
               <button className="btn-icon" aria-label="Message">
                 <i className="far fa-envelope"></i>
@@ -192,17 +250,26 @@ function App() {
                     </a>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link">
-                      <i className="fas fa-archive me-2"></i>Archived
-                    </a>
+                    <div
+                      className="nav-link d-flex align-items-center"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => (window.location.href = "/archived")}
+                    >
+                      <i className="fas fa-archive me-2"></i>
+                      <span>Archived</span>
+                    </div>
                   </li>
                 </ul>
 
                 {/* Workbook List */}
                 <div className="row">
                   {workbooks.map((wb, index) => (
-                    <div className="col-md-3 col-sm-6 mb-3" key={index}>
-                      <div className="card h-100">
+                    <div className="col-md-3 col-sm-6 mb-3" key={wb.id}>
+                      <div
+                        className="card h-100 shadow card-hover"
+                        onClick={() => (window.location.href = "/kalender")}
+                        style={{ cursor: "pointer" }}
+                      >
                         <img
                           src={wb.image}
                           className="card-img-top"
@@ -217,6 +284,78 @@ function App() {
                           >
                             {wb.createdAt}
                           </p>
+                          <div className="note-actions">
+                            <i
+                              className="fas fa-ellipsis-h"
+                              onClick={(e) => {
+                                e.stopPropagation(); // agar tidak ikut trigger ke window.location
+                                toggleNoteMenu(wb.id, e);
+                              }}
+                              style={{
+                                cursor: "pointer",
+                                fontSize: "18px",
+                                color: "white",
+                                padding: "6px",
+                                borderRadius: "50%",
+                                transition: "background-color 0.2s",
+                              }}
+                              onMouseEnter={(e) =>
+                                (e.target.style.backgroundColor =
+                                  "rgba(215, 212, 212, 0.84)")
+                              }
+                              onMouseLeave={(e) =>
+                                (e.target.style.backgroundColor = "transparent")
+                              }
+                            />
+
+                            {activeMenuId === wb.id && (
+                              <div
+                                className="crud-menu"
+                                ref={menuRef}
+                                onClick={(e) => e.stopPropagation()} // supaya klik di dalam menu tidak redirect
+                                style={{
+                                  position: "absolute",
+                                  top: "30px",
+                                  right: "0",
+                                  backgroundColor: "white",
+                                  border: "1px solid #e0e0e0",
+                                  borderRadius: "8px",
+                                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                                  zIndex: "10000",
+                                  minWidth: "120px",
+                                  padding: "8px 0",
+                                }}
+                              >
+                                {["Edit", "Archived", "Delete"].map(
+                                  (action) => (
+                                    <div
+                                      key={action}
+                                      onClick={() =>
+                                        handleNoteAction(action, wb.id)
+                                      }
+                                      style={{
+                                        padding: "12px 20px",
+                                        cursor: "pointer",
+                                        fontSize: "14px",
+                                        color: "#333",
+                                        transition: "background-color 0.2s",
+                                      }}
+                                      onMouseEnter={(e) =>
+                                        (e.target.style.backgroundColor =
+                                          "#f5f5f5")
+                                      }
+                                      onMouseLeave={(e) =>
+                                        (e.target.style.backgroundColor =
+                                          "white")
+                                      }
+                                    >
+                                      {action}
+                                    </div>
+                                  )
+                                )}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -225,7 +364,7 @@ function App() {
                   {/* Add New Workbook */}
                   <div className="col-md-3 col-sm-6 mb-3">
                     <div
-                      className="card text-center"
+                      className="card text-center shadow-sm card-hover"
                       style={{
                         minHeight: "200px",
                         border: "2px dashed #ddd",
@@ -248,7 +387,7 @@ function App() {
               </div>
             </div>
 
-            {/* Modal for Create Workbook */}
+            {/* Modal for Create or Edit Workbook */}
             {showModal && (
               <div
                 className="modal fade show"
@@ -263,7 +402,11 @@ function App() {
                 >
                   <div className="modal-content">
                     <div className="modal-header">
-                      <h5 className="modal-title">Create New Workbook</h5>
+                      <h5 className="modal-title">
+                        {editingIndex !== null
+                          ? "Edit Workbook"
+                          : "Create New Workbook"}
+                      </h5>
                       <button
                         type="button"
                         className="btn-close"
@@ -272,7 +415,7 @@ function App() {
                     </div>
 
                     <div className="modal-body">
-                      <form onSubmit={handleCreateWorkbook}>
+                      <form onSubmit={handleCreateOrUpdateWorkbook}>
                         <div className="mb-3">
                           <label
                             htmlFor="workspace-name"
@@ -318,10 +461,11 @@ function App() {
                           )}
                         </div>
 
-                        {/* Tombol dibuat sejajar horizontal */}
                         <div className="modal-footer d-flex justify-content-end">
                           <button type="submit" className="btn btn-primary">
-                            Create Workbook
+                            {editingIndex !== null
+                              ? "Update Workbook"
+                              : "Create Workbook"}
                           </button>
                           <button
                             type="button"

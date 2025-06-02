@@ -1,92 +1,74 @@
-import { NavLink } from "react-router-dom";
 
 export default function Sidebar() {
   return (
-    <div>
-      <ul>
-        <NavLink
-          to="/workspace"
-          style={{ textDecoration: "none", color: "inherit" }}
-          className={({ isActive }) => (isActive ? "active" : "")}
-        >
-          <li>
-            <i className="fas fa-home"></i> Dashboard
-          </li>
-        </NavLink>
+<div>
+  <ul>
+    <li
+      onClick={() => window.location.href = "/workspace"}
+      className={`nav-item ${window.location.pathname === "/workspace" ? "active2" : ""}`}
+    >
+      <i className="fas fa-home me-2"></i> Dashboard
+    </li>
 
-        <NavLink
-          to="/recentFile"
-          style={{ textDecoration: "none", color: "inherit" }}
-          className={({ isActive }) => (isActive ? "active" : "")}
-        >
-          <li>
-            <i className="fas fa-clock"></i> Recent
-          </li>
-        </NavLink>
+    <li
+      onClick={() => window.location.href = "/recentFile"}
+      className={`nav-item ${window.location.pathname === "/recentFile" ? "active2" : ""}`}
+    >
+      <i className="fas fa-clock me-2"></i> Recent
+    </li>
 
-        <NavLink
-          to="/shared"
-          style={{ textDecoration: "none", color: "inherit" }}
-          className={({ isActive }) => (isActive ? "active" : "")}
-        >
-          <li>
-            <i className="fas fa-folder"></i> Shared
-          </li>
-        </NavLink>
+    <li
+      onClick={() => window.location.href = "/shared"}
+      className={`nav-item ${window.location.pathname === "/shared" ? "active2" : ""}`}
+    >
+      <i className="fas fa-folder me-2"></i> Shared
+    </li>
 
-        <NavLink
-          to="/favorite"
-          style={{ textDecoration: "none", color: "inherit" }}
-          className={({ isActive }) => (isActive ? "active" : "")}
-        >
-          <li>
-            <i className="fas fa-star"></i> Favorites
-          </li>
-        </NavLink>
-      </ul>
+    <li
+      onClick={() => window.location.href = "/favorite"}
+      className={`nav-item ${window.location.pathname === "/favorite" ? "active" : ""}`}
+    >
+      <i className="fas fa-star me-2"></i> Favorites
+    </li>
+  </ul>
 
-      <div className="premium-box text-center p-3 border rounded">
-        <i
-          className="fas fa-gem mb-2"
-          style={{ fontSize: "2rem", color: "#6f42c1" }}
-        ></i>
-        <p className="mb-1">
-          <strong>Current plan:</strong>
-          <br />
-          Free Trial
-        </p>
-        <small>Upgrade to Premium to get exclusive features</small>
-        {/* Ganti button biasa dengan Link styled seperti button */}
-        <NavLink
-          to="/setting/upgrade"
-          className="btn btn-sm w-100 rounded-pill mt-2"
-          role="button"
-        >
-          ⚡ Go Premium
-        </NavLink>
-      </div>
-
-      <ul>
-        <NavLink
-          to="/setting/profile"
-          style={{ textDecoration: "none", color: "inherit" }}
-          className={({ isActive }) => (isActive ? "active" : "")}
-        >
-          <li className="bottom-menu">
-            <i className="fas fa-cog"></i> Setting
-          </li>
-        </NavLink>
-
-        <NavLink
-          to="/logout"
-          style={{ textDecoration: "none", color: "inherit" }}
-          className={({ isActive }) => (isActive ? "active" : "")}
-        >
-          <li>
-            <i className="fas fa-sign-out-alt"></i> Logout
-          </li>
-        </NavLink>
-      </ul>
+  <div className="premium-box text-center p-3 border rounded">
+    <i
+      className="fas fa-gem "
+      style={{ fontSize: "2rem", color: "#4361ee" }}
+    ></i>
+    <p className="mb-1">
+      <strong>Current plan:</strong>
+      <br />
+      Free Trial
+    </p>
+    <small>Upgrade to Premium to get exclusive features</small>
+    <div
+      className="btn btn-sm w-100 rounded-pill mt-2"
+      role="button"
+      onClick={() => window.location.href = "/setting/upgrade"}
+      style={{ cursor: "pointer" }}
+    >
+      ⚡ Go Premium
     </div>
+  </div>
+
+  <ul>
+    <li
+      onClick={() => window.location.href = "/setting/profile"}
+      className={`bottom-menu nav-item ${window.location.pathname === "/setting/profile" ? "active" : ""}`}
+    >
+      <i className="fas fa-cog me-2"></i> Setting
+    </li>
+
+    <li
+      onClick={() => window.location.href = "/"}
+      className={`nav-item ${window.location.pathname === "/logout" ? "active" : ""}`}
+    >
+      <i className="fas fa-sign-out-alt me-2"></i> Logout
+    </li>
+  </ul>
+</div>
+
   );
 }

@@ -7,8 +7,6 @@ export default function Sidebar() {
   const menuItems = [
     { icon: "👤", label: "Profile", path: "/setting/profile" },
     { icon: "⬆️", label: "Upgrade", path: "/setting/upgrade" },
-    { icon: "👥", label: "My team", path: "/team" },
-    { icon: "🔔", label: "Notification", path: "/notification" },
     { icon: "🌐", label: "Language & Region", path: "/setting/bahasa" }
   ];
 

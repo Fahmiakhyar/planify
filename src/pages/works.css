@@ -81,6 +81,14 @@
 .nav-tabs .nav-link i {
   margin-right: 0.5rem;
 }
+.card-hover {
+      transition: box-shadow 0.3s ease, transform 0.2s ease;
+    }
+
+    .card-hover:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      transform: translateY(-4px);
+    }
 
 /* Add New Card */
 .add-new-card {

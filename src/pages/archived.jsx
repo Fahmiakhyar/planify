@@ -4,7 +4,8 @@ import "../pages/works.css";
 
 function App() {
   const [showRightSidebar, setShowRightSidebar] = useState(false);
-  const [favorites, setFavorites] = useState([]); // Simpan favorit berdasarkan title
+  const [favorites, setFavorites] = useState([]); // Store favorites based on title
+  const [archivedWorkbooks, setArchivedWorkbooks] = useState([]); // Store archived workbooks
 
   const toggleRightSidebar = () => {
     setShowRightSidebar(!showRightSidebar);
@@ -12,10 +13,14 @@ function App() {
 
   const handleFavoriteClick = (item) => {
     if (favorites.includes(item.title)) {
-      setFavorites(favorites.filter(title => title !== item.title)); // Hapus dari favorit
+      setFavorites(favorites.filter(title => title !== item.title)); // Remove from favorites
     } else {
-      setFavorites([...favorites, item.title]); // Tambah ke favorit
+      setFavorites([...favorites, item.title]); // Add to favorites
     }
+  };
+
+  const handleArchiveClick = (item) => {
+    setArchivedWorkbooks([...archivedWorkbooks, item]); // Archive the workbook
   };
 
   const workbooks = [
@@ -40,7 +45,7 @@ function App() {
     <>
       <meta charSet="utf-8" />
       <meta content="width=device-width, initial-scale=1" name="viewport" />
-      <title>Planify - Recent File</title>
+      <title>Planify - Archived</title>
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
         rel="stylesheet"
@@ -51,7 +56,7 @@ function App() {
       />
 
       <div className="d-flex">
-        {/* Sidebar Kiri */}
+        {/* Left Sidebar */}
         <div className="sidebar-left">
           <i
             className="fas fa-home toggle-sidebar mb-2"
@@ -85,7 +90,7 @@ function App() {
           </div>
         </div>
 
-        {/* Sidebar Kanan */}
+        {/* Right Sidebar */}
         <div
           className={`sidebar-right ${showRightSidebar ? "show" : ""}`}
           aria-hidden={!showRightSidebar}
@@ -93,7 +98,7 @@ function App() {
           <Sidebar />
         </div>
 
-        {/* Konten Utama */}
+        {/* Main Content */}
         <main className="content flex-grow-1" role="main">
           <header className="app-header" role="banner">
             <div
@@ -125,16 +130,16 @@ function App() {
               <img
                 className="user-avatar"
                 src="https://storage.googleapis.com/a1aa/image/b1775588-94f7-4a59-b686-0a1dddb0891b.jpg"
-                alt="User Avatar"
+                alt="User  Avatar"
                 width="40"
                 height="40"
               />
             </nav>
           </header>
 
-          {/* Tabel Recent Files */}
+          {/* Archived Table */}
           <div className="container-fluid mt-4">
-            <h2 className="h4 mb-3">Recent Files</h2>
+            <h2 className="h4 mb-3">Archived</h2>
             <table className="table">
               <thead>
                 <tr>
@@ -164,7 +169,43 @@ function App() {
                         onClick={() => handleFavoriteClick(item)}
                         style={{ cursor: 'pointer', transition: '0.3s ease' }}
                       />
+                      <i
+                        className="fas fa-archive ms-2"
+                        onClick={() => handleArchiveClick(item)}
+                        style={{ cursor: 'pointer', transition: '0.3s ease' }}
+                      />
                     </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Archived Workbooks Section */}
+          <div className="container-fluid mt-4">
+            <h2 className="h4 mb-3">Archived Workbooks</h2>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Edited</th>
+                </tr>
+              </thead>
+              <tbody>
+                {archivedWorkbooks.map((item, index) => (
+                  <tr key={index}>
+                    <td>
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        width="50"
+                        className="me-2"
+                      />
+                      {item.title}
+                    </td>
+                    <td>Public</td>
+                    <td>{item.createdAt}</td>
                   </tr>
                 ))}
               </tbody>
