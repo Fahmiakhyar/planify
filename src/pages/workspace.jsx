@@ -196,14 +196,8 @@ function App() {
             </div>
 
             <nav aria-label="User  actions" className="nav-actions">
-              <button className="btn-icon" aria-label="Message">
-                <i className="far fa-envelope"></i>
-              </button>
               <button className="btn-icon" aria-label="Notification">
                 <i className="far fa-bell"></i>
-              </button>
-              <button className="btn-icon" aria-label="Help">
-                <i className="far fa-circle-question"></i>
               </button>
               <button className="premium-btn" aria-label="Go Premium">
                 Go Premium

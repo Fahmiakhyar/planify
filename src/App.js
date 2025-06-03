@@ -98,6 +98,11 @@ function App() {
     }
     setActiveMenuId(null);
   };
+  const tabRoutes = {
+    Calendar: "/kalender",
+    Tasks: "/task",
+    Notes: "/notes",
+  };
 
   return (
     <>
@@ -172,28 +177,12 @@ function App() {
 
             <nav aria-label="User  actions" className="nav-actions">
               <button
-                aria-label="Message"
-                className="btn-icon"
-                title="Message"
-                type="button"
-              >
-                <i className="far fa-envelope"> </i>
-              </button>
-              <button
                 aria-label="Notification"
                 className="btn-icon"
                 title="Notification"
                 type="button"
               >
                 <i className="far fa-bell"> </i>
-              </button>
-              <button
-                aria-label="Help"
-                className="btn-icon"
-                title="Help"
-                type="button"
-              >
-                <i className="far fa-circle-question"> </i>
               </button>
               <button
                 aria-label="Go Premium"
@@ -243,23 +232,17 @@ function App() {
                       }
                     }}
                   >
-                    <i className={`fas fa-${iconClass}`} />
+                    <i
+                      className={`fas fa-${iconClass}`}
+                      style={{ marginRight: "6px" }}
+                    />
                     {tab}
                   </div>
                 );
 
-                // Bungkus tab "Calendar" dengan Link ke /kalender
-                return tab === "Calendar" ? (
+                return (
                   <Link
-                    to="/kalender"
-                    key={tab}
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    {tabContent}
-                  </Link>
-                ) : (
-                  <Link
-                    to="/Task"
+                    to={tabRoutes[tab]} // arahkan sesuai tab
                     key={tab}
                     style={{ textDecoration: "none", color: "inherit" }}
                   >

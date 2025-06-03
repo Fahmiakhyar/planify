@@ -7,13 +7,13 @@ function App() {
   const [showRightSidebar, setShowRightSidebar] = useState(false);
   const [activeTab, setActiveTab] = useState("Tasks");
   const [taskInputVisible, setTaskInputVisible] = useState(false);
-const [newTask, setNewTask] = useState({
-  name: '',
-  description: '',
-  dueDate: '',
-  reminderDate: '',
-  reminderTime: '',
-});
+  const [newTask, setNewTask] = useState({
+    name: "",
+    description: "",
+    dueDate: "",
+    reminderDate: "",
+    reminderTime: "",
+  });
 
   const [tasks, setTasks] = useState({
     "To Do": [],
@@ -61,6 +61,11 @@ const [newTask, setNewTask] = useState({
     const updatedTasks = [...tasks[column]];
     updatedTasks.splice(index, 1);
     setTasks({ ...tasks, [column]: updatedTasks });
+  };
+  const tabRoutes = {
+    Calendar: "/kalender",
+    Tasks: "/task",
+    Notes: "/notes",
   };
 
   return (
@@ -135,14 +140,8 @@ const [newTask, setNewTask] = useState({
             </div>
 
             <nav aria-label="User  actions" className="nav-actions">
-              <button className="btn-icon" aria-label="Message">
-                <i className="far fa-envelope"></i>
-              </button>
               <button className="btn-icon" aria-label="Notification">
                 <i className="far fa-bell"></i>
-              </button>
-              <button className="btn-icon" aria-label="Help">
-                <i className="far fa-circle-question"></i>
               </button>
               <button className="premium-btn" aria-label="Go Premium">
                 Go Premium
@@ -162,7 +161,7 @@ const [newTask, setNewTask] = useState({
               <h1 className="workbook-title">Wuling's Workbook</h1>
             </div>
 
-            <nav className="tab-nav" role="tablist">
+            <nav aria-label="Workbook tabs" className="tab-nav" role="tablist">
               {["Calendar", "Tasks", "Notes"].map((tab) => {
                 const iconClass =
                   tab === "Calendar"
@@ -179,6 +178,11 @@ const [newTask, setNewTask] = useState({
                     role="tab"
                     aria-selected={activeTab === tab}
                     tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        handleTabClick(tab);
+                      }
+                    }}
                   >
                     <i
                       className={`fas fa-${iconClass}`}
@@ -188,17 +192,9 @@ const [newTask, setNewTask] = useState({
                   </div>
                 );
 
-                return tab === "Calendar" ? (
+                return (
                   <Link
-                    to="/kalender"
-                    key={tab}
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    {tabContent}
-                  </Link>
-                ) : (
-                  <Link
-                    to="/Notes"
+                    to={tabRoutes[tab]} // arahkan sesuai tab
                     key={tab}
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
@@ -257,122 +253,135 @@ const [newTask, setNewTask] = useState({
             >
               &times;
             </span>
-            <h2>Add New Task</h2>
+            <h4 style={{ paddingBottom: "30px", textAlign: "center" }}>
+              Add New Task
+            </h4>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 saveTask();
               }}
             >
-              <div className="mb-3">
-                <label htmlFor="taskName" className="form-label">
-                  Task Name
-                </label>
-                <input
-                  type="text"
-                  id="taskName"
-                  className="form-control"
-                  value={newTask.name}
-                  onChange={(e) =>
-                    setNewTask({ ...newTask, name: e.target.value })
-                  }
-                  required
-                />
+              <div className="row mb-3">
+                <div className="col-md-6">
+                  <label htmlFor="taskName" className="form-label">
+                    Task Name
+                  </label>
+                  <input
+                    type="text"
+                    id="taskName"
+                    className="form-control"
+                    value={newTask.name}
+                    onChange={(e) =>
+                      setNewTask({ ...newTask, name: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+
+                <div className="col-md-6">
+                  <label htmlFor="taskDescription" className="form-label">
+                    Description
+                  </label>
+                  <textarea
+                    id="taskDescription"
+                    className="form-control"
+                    value={newTask.description}
+                    onChange={(e) =>
+                      setNewTask({ ...newTask, description: e.target.value })
+                    }
+                    required
+                  />
+                </div>
               </div>
 
-              <div className="mb-3">
-                <label htmlFor="taskDescription" className="form-label">
-                  Description
-                </label>
-                <textarea
-                  id="taskDescription"
-                  className="form-control"
-                  value={newTask.description}
-                  onChange={(e) =>
-                    setNewTask({ ...newTask, description: e.target.value })
-                  }
-                  required
-                />
+              <div className="row mb-3">
+                <div className="col-md-6">
+                  <label htmlFor="taskDueDate" className="form-label">
+                    Due Date
+                  </label>
+                  <input
+                    type="date"
+                    id="taskDueDate"
+                    className="form-control"
+                    value={newTask.dueDate}
+                    onChange={(e) =>
+                      setNewTask({ ...newTask, dueDate: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+
+                <div className="col-md-6">
+                  <label htmlFor="taskReminderDate" className="form-label">
+                    Due Date Reminder
+                  </label>
+                  <input
+                    type="date"
+                    id="taskReminderDate"
+                    className="form-control"
+                    value={newTask.reminderDate}
+                    onChange={(e) =>
+                      setNewTask({ ...newTask, reminderDate: e.target.value })
+                    }
+                    required
+                  />
+                </div>
               </div>
 
-              <div className="mb-3">
-                <label htmlFor="taskDueDate" className="form-label">
-                  Due Date
-                </label>
-                <input
-                  type="date"
-                  id="taskDueDate"
-                  className="form-control"
-                  value={newTask.dueDate}
-                  onChange={(e) =>
-                    setNewTask({ ...newTask, dueDate: e.target.value })
-                  }
-                  required
-                />
-              </div>
+              <div className="row mb-3">
+                <div className="col-md-6">
+                  <label htmlFor="taskReminderTime" className="form-label">
+                    Reminder Time
+                  </label>
+                  <input
+                    type="time"
+                    id="taskReminderTime"
+                    className="form-control"
+                    value={newTask.reminderTime}
+                    onChange={(e) =>
+                      setNewTask({ ...newTask, reminderTime: e.target.value })
+                    }
+                    required
+                  />
+                </div>
 
-              <div className="mb-3">
-                <label htmlFor="taskReminderDate" className="form-label">
-                  Due Date Reminder
-                </label>
-                <input
-                  type="date"
-                  id="taskReminderDate"
-                  className="form-control"
-                  value={newTask.reminderDate}
-                  onChange={(e) =>
-                    setNewTask({ ...newTask, reminderDate: e.target.value })
-                  }
-                  required
-                />
-              </div>
+                <div className="col-md-6">
+                  <div
+                    className="icon-container mb-3"
+                    style={{ marginTop: "25px" }}
+                  >
+                    <i
+                      className="fas fa-file-circle-plus icon"
+                      title="Upload File"
+                      onClick={() => fileInputRef.current.click()}
+                    ></i>
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      style={{ display: "none" }}
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        alert(`File selected: ${file?.name}`);
+                      }}
+                    />
 
-              <div className="mb-3">
-                <label htmlFor="taskReminderTime" className="form-label">
-                  Reminder Time
-                </label>
-                <input
-                  type="time"
-                  id="taskReminderTime"
-                  className="form-control"
-                  value={newTask.reminderTime}
-                  onChange={(e) =>
-                    setNewTask({ ...newTask, reminderTime: e.target.value })
-                  }
-                  required
-                />
-              </div>
-
-              <div className="icon-container mb-3">
-                <i
-                  className="fas fa-file-circle-plus icon"
-                  title="Upload File"
-                  onClick={() => fileInputRef.current.click()}
-                ></i>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  style={{ display: "none" }}
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    alert(`File selected: ${file?.name}`);
-                  }}
-                />
-
-                <i
-                  className="fas fa-link icon ms-2"
-                  title="Add Link"
-                  onClick={() => linkInputRef.current.focus()}
-                ></i>
-                <input
-                  type="url"
-                  ref={linkInputRef}
-                  placeholder="https://example.com"
-                  className="hidden-link-input"
-                  onChange={(e) => {
-                    alert(`Link entered: ${e.target.value}`);
-                  }}
-                />
+                    <i
+                      className="fas fa-link icon ms-2"
+                      title="Add Link"
+                      onClick={() => linkInputRef.current.focus()}
+                    ></i>
+                    <input
+                      type="url"
+                      ref={linkInputRef}
+                      placeholder="https://example.com"
+                      className="hidden-link-input"
+                      onChange={(e) => {
+                        alert(`Link entered: ${e.target.value}`);
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="text-end">

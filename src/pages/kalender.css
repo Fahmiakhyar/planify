@@ -155,7 +155,8 @@
   background-color: #4361ee;
 }
 .event-red {
-  background-color: #ef476f;
+  background-color: yellow;
+  color: black;
 }
 .event-green {
   background-color: #06d6a0;

@@ -195,28 +195,12 @@ function App() {
 
             <nav aria-label="User  actions" className="nav-actions">
               <button
-                aria-label="Message"
-                className="btn-icon"
-                title="Message"
-                type="button"
-              >
-                <i className="far fa-envelope"> </i>
-              </button>
-              <button
                 aria-label="Notification"
                 className="btn-icon"
                 title="Notification"
                 type="button"
               >
                 <i className="far fa-bell"> </i>
-              </button>
-              <button
-                aria-label="Help"
-                className="btn-icon"
-                title="Help"
-                type="button"
-              >
-                <i className="far fa-circle-question"> </i>
               </button>
               <button
                 aria-label="Go Premium"
@@ -544,23 +528,48 @@ function App() {
                   <div className="task-info">
                     <p>
                       <strong>Status:</strong>{" "}
-                      {popupData.status === "●" && (
-                        <>
-                          <i className="fas fa-circle-dot text-secondary me-1"></i>{" "}
-                          To Do
-                        </>
+                      {popupData.status === "To Do" && (
+                        <span
+                          style={{
+                            backgroundColor: "#4361ee",
+                            color: "white",
+                            padding: "5px 15px",
+                            borderRadius: "20px",
+                            display: "inline-block",
+                            fontSize: "14px",
+                          }}
+                        >
+                          <i className="text-secondary me-1"></i> To Do
+                        </span>
                       )}
                       {popupData.status === "Doing" && (
-                        <>
-                          <i className="fas fa-spinner text-warning me-1"></i>{" "}
-                          Doing
-                        </>
+                        <span
+                          style={{
+                            backgroundColor: "yellow",
+                            color: "black",
+                            padding: "5px 15px",
+                            borderRadius: "20px",
+                            display: "inline-block",
+                            fontSize: "14px",
+                          }}
+                        >
+                          <i className=" text-warning me-1"></i> Doing
+                        </span>
                       )}
                       {popupData.status === "Done" && (
-                        <>
-                          <i className="fas fa-check-circle text-success me-1"></i>{" "}
+                        <span
+                          style={{
+                            backgroundColor: "#06d6a0",
+                            color: "white",
+                            padding: "5px 15px",
+                            borderRadius: "20px",
+                            display: "inline-block",
+                            fontSize: "14px",
+                          }}
+                        >
+                          <i className="text-success me-1"></i>{" "}
                           Done
-                        </>
+                        </span>
                       )}
                     </p>
 
@@ -616,163 +625,194 @@ function App() {
                   >
                     &times;
                   </span>
-                  <h2>Add New Task</h2>
+                  <h4 style={{ paddingBottom: "30px", textAlign: "center" }}>
+                    Add New Task
+                  </h4>
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
                       handleSaveTask();
                     }}
                   >
-                    <div className="mb-3">
-                      <label htmlFor="taskName" className="form-label">
-                        Task Name
-                      </label>
-                      <input
-                        type="text"
-                        id="taskName"
-                        className="form-control"
-                        value={newTask.name}
-                        onChange={(e) =>
-                          setNewTask({ ...newTask, name: e.target.value })
-                        }
-                        required
-                      />
-                    </div>
-
-                    <div className="mb-3">
-                      <label className="form-label d-block">Task Status</label>
-                      <div className="form-check form-check-inline">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          name="taskStatus"
-                          id="statusTodo"
-                          value="To Do"
-                          checked={newTask.status === "To Do"}
-                          onChange={(e) =>
-                            setNewTask({ ...newTask, status: e.target.value })
-                          }
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="statusTodo"
-                        >
-                          <i className="fas fa-circle-dot text-secondary me-1"></i>{" "}
-                          To Do
+                    <div className="row mb-3">
+                      <div className="col-md-6">
+                        <label htmlFor="taskName" className="form-label">
+                          Task Name
                         </label>
-                      </div>
-                      <div className="form-check form-check-inline">
                         <input
-                          className="form-check-input"
-                          type="radio"
-                          name="taskStatus"
-                          id="statusDoing"
-                          value="Doing"
-                          checked={newTask.status === "Doing"}
+                          type="text"
+                          id="taskName"
+                          className="form-control"
+                          value={newTask.name}
                           onChange={(e) =>
-                            setNewTask({ ...newTask, status: e.target.value })
+                            setNewTask({ ...newTask, name: e.target.value })
                           }
+                          required
                         />
-                        <label
-                          className="form-check-label"
-                          htmlFor="statusDoing"
-                        >
-                          <i className="fas fa-spinner text-warning me-1"></i>{" "}
-                          Doing
-                        </label>
                       </div>
-                      <div className="form-check form-check-inline">
+
+                      <div className="col-md-6">
+                        <label className="form-label d-block">
+                          Task Status
+                        </label>
+                        <div className="form-check form-check-inline">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            name="taskStatus"
+                            id="statusTodo"
+                            value="To Do"
+                            checked={newTask.status === "To Do"}
+                            onChange={(e) =>
+                              setNewTask({ ...newTask, status: e.target.value })
+                            }
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="statusTodo"
+                            style={{
+                              backgroundColor: "#4361ee",
+                              color: "white",
+                              padding: "5px 10px",
+                              borderRadius: "20px",
+                            }}
+                          >
+                            <i className=" text-secondary me-1"></i> To Do
+                          </label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            name="taskStatus"
+                            id="statusDoing"
+                            value="Doing"
+                            checked={newTask.status === "Doing"}
+                            onChange={(e) =>
+                              setNewTask({ ...newTask, status: e.target.value })
+                            }
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="statusDoing"
+                            style={{
+                              backgroundColor: "yellow",
+                              color: "black",
+                              padding: "5px 10px",
+                              borderRadius: "20px",
+                            }}
+                          >
+                            <i className=" text-warning me-1"></i> Doing
+                          </label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            name="taskStatus"
+                            id="statusDone"
+                            value="Done"
+                            checked={newTask.status === "Done"}
+                            onChange={(e) =>
+                              setNewTask({ ...newTask, status: e.target.value })
+                            }
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="statusDone"
+                            style={{
+                              backgroundColor: "#06d6a0",
+                              color: "white",
+                              padding: "5px 10px",
+                              borderRadius: "20px",
+                            }}
+                          >
+                            <i className=" text-success me-1"></i> Done
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="row mb-3">
+                      <div className="col-md-6">
+                        <label htmlFor="taskDescription" className="form-label">
+                          Description
+                        </label>
+                        <textarea
+                          id="taskDescription"
+                          className="form-control"
+                          value={newTask.description}
+                          onChange={(e) =>
+                            setNewTask({
+                              ...newTask,
+                              description: e.target.value,
+                            })
+                          }
+                          required
+                        />
+                      </div>
+
+                      <div className="col-md-6">
+                        <label htmlFor="taskDueDate" className="form-label">
+                          Due Date
+                        </label>
                         <input
-                          className="form-check-input"
-                          type="radio"
-                          name="taskStatus"
-                          id="statusDone"
-                          value="Done"
-                          checked={newTask.status === "Done"}
+                          type="date"
+                          id="taskDueDate"
+                          className="form-control"
+                          value={newTask.dueDate}
                           onChange={(e) =>
-                            setNewTask({ ...newTask, status: e.target.value })
+                            setNewTask({ ...newTask, dueDate: e.target.value })
                           }
+                          required
                         />
-                        <label
-                          className="form-check-label"
-                          htmlFor="statusDone"
-                        >
-                          <i className="fas fa-check-circle text-success me-1"></i>{" "}
-                          Done
-                        </label>
                       </div>
                     </div>
 
-                    <div className="mb-3">
-                      <label htmlFor="taskDescription" className="form-label">
-                        Description
-                      </label>
-                      <textarea
-                        id="taskDescription"
-                        className="form-control"
-                        value={newTask.description}
-                        onChange={(e) =>
-                          setNewTask({
-                            ...newTask,
-                            description: e.target.value,
-                          })
-                        }
-                        required
-                      />
-                    </div>
+                    <div className="row mb-3">
+                      <div className="col-md-6">
+                        <label
+                          htmlFor="taskReminderDate"
+                          className="form-label"
+                        >
+                          Due Date Reminder
+                        </label>
+                        <input
+                          type="date"
+                          id="taskReminderDate"
+                          className="form-control"
+                          value={newTask.reminderDate}
+                          onChange={(e) =>
+                            setNewTask({
+                              ...newTask,
+                              reminderDate: e.target.value,
+                            })
+                          }
+                          required
+                        />
+                      </div>
 
-                    <div className="mb-3">
-                      <label htmlFor="taskDueDate" className="form-label">
-                        Due Date
-                      </label>
-                      <input
-                        type="date"
-                        id="taskDueDate"
-                        className="form-control"
-                        value={newTask.dueDate}
-                        onChange={(e) =>
-                          setNewTask({ ...newTask, dueDate: e.target.value })
-                        }
-                        required
-                      />
-                    </div>
-
-                    <div className="mb-3">
-                      <label htmlFor="taskReminderDate" className="form-label">
-                        Due Date Reminder
-                      </label>
-                      <input
-                        type="date"
-                        id="taskReminderDate"
-                        className="form-control"
-                        value={newTask.reminderDate}
-                        onChange={(e) =>
-                          setNewTask({
-                            ...newTask,
-                            reminderDate: e.target.value,
-                          })
-                        }
-                        required
-                      />
-                    </div>
-
-                    <div className="mb-3">
-                      <label htmlFor="taskReminderTime" className="form-label">
-                        Reminder Time
-                      </label>
-                      <input
-                        type="time"
-                        id="taskReminderTime"
-                        className="form-control"
-                        value={newTask.reminderTime || ""}
-                        onChange={(e) =>
-                          setNewTask({
-                            ...newTask,
-                            reminderTime: e.target.value,
-                          })
-                        }
-                        required
-                      />
+                      <div className="col-md-6">
+                        <label
+                          htmlFor="taskReminderTime"
+                          className="form-label"
+                        >
+                          Reminder Time
+                        </label>
+                        <input
+                          type="time"
+                          id="taskReminderTime"
+                          className="form-control"
+                          value={newTask.reminderTime || ""}
+                          onChange={(e) =>
+                            setNewTask({
+                              ...newTask,
+                              reminderTime: e.target.value,
+                            })
+                          }
+                          required
+                        />
+                      </div>
                     </div>
 
                     <div className="icon-container">
