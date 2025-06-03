@@ -1,16 +1,16 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/setting/sidebar";
 import "../pages/bahasa.css";
 
 const AccountSettings = () => {
-  const [, setActiveTab] = useState("language");
+  const navigate = useNavigate(); // digunakan untuk tombol back
   const [language, setLanguage] = useState("English");
   const [dateFormat, setDateFormat] = useState("May 6, 2025");
   const [timeFormat, setTimeFormat] = useState("24hour");
   const [weekStart, setWeekStart] = useState("monday");
 
   const handleSaveChanges = () => {
-    // Handle save functionality here
     console.log("Saving changes...", {
       language,
       dateFormat,
@@ -19,11 +19,15 @@ const AccountSettings = () => {
     });
   };
 
+  const handleGoBack = () => {
+    navigate(-1); // kembali ke halaman sebelumnya
+  };
+
   return (
     <>
       <meta charSet="utf-8" />
       <meta content="width=device-width, initial-scale=1" name="viewport" />
-      <title>Bahasa </title>
+      <title>Bahasa</title>
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
         rel="stylesheet"
@@ -32,10 +36,33 @@ const AccountSettings = () => {
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         rel="stylesheet"
       />
+
       <div className="container py-5">
         <div className="row">
           <div className="col-12">
-            <h2 className="mb-4 text-primary fw-bold">Account settings</h2>
+            {/* Tombol back dan judul */}
+            <div className="d-flex align-items-center mb-4">
+              <button
+                className="back-arrow me-3"
+                onClick={handleGoBack}
+                aria-label="Go back"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  className="bi bi-arrow-left"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+                  />
+                </svg>
+              </button>
+              <h2 className="text-primary fw-bold mb-0">Account Settings</h2>
+            </div>
           </div>
         </div>
 
@@ -45,39 +72,18 @@ const AccountSettings = () => {
             <Sidebar />
           </div>
 
-          {/* Main Content */}
+          {/* Konten utama */}
           <div className="col-md-9">
             <div className="content-area">
               <div className="d-flex justify-content-between align-items-center mb-4">
-                <div className="d-flex align-items-center">
-                  <button
-                    className="back-arrow me-3"
-                    onClick={() => setActiveTab("profile")}
-                    aria-label="Go back"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      fill="currentColor"
-                      className="bi bi-arrow-left"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
-                      />
-                    </svg>
-                  </button>
-                  <h3 className="mb-0">Language & Region</h3>
-                </div>
+                <h3 className="mb-0">Language & Region</h3>
                 <button className="save-btn" onClick={handleSaveChanges}>
                   Save Changes
                 </button>
               </div>
 
               <div className="row">
-                {/* Language Selection */}
+                {/* Language */}
                 <div className="col-md-12 mb-4">
                   <label htmlFor="language" className="form-label">
                     Language
@@ -102,7 +108,7 @@ const AccountSettings = () => {
                 {/* Date Format */}
                 <div className="col-md-12 mb-4">
                   <label htmlFor="dateFormat" className="form-label">
-                    Date format
+                    Date Format
                   </label>
                   <select
                     className="form-select"
@@ -121,7 +127,7 @@ const AccountSettings = () => {
                 {/* Time Format */}
                 <div className="col-md-12 mb-4">
                   <fieldset>
-                    <legend className="form-label">Time format</legend>
+                    <legend className="form-label">Time Format</legend>
                     <div className="mt-2">
                       <div className="form-check form-check-inline">
                         <input
@@ -158,7 +164,7 @@ const AccountSettings = () => {
                 {/* Week Start */}
                 <div className="col-md-12 mb-4">
                   <fieldset>
-                    <legend className="form-label">Start of the week</legend>
+                    <legend className="form-label">Start of the Week</legend>
                     <div className="mt-2">
                       <div className="form-check form-check-inline">
                         <input

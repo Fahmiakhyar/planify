@@ -7,13 +7,14 @@ function App() {
   const [showRightSidebar, setShowRightSidebar] = useState(false);
   const [activeTab, setActiveTab] = useState("Tasks");
   const [taskInputVisible, setTaskInputVisible] = useState(false);
-  const [newTask, setNewTask] = useState({
-    name: "",
-    description: "",
-    dueDate: "",
-    reminderDate: "",
-    reminderTime: "",
-  });
+const [newTask, setNewTask] = useState({
+  name: '',
+  description: '',
+  dueDate: '',
+  reminderDate: '',
+  reminderTime: '',
+});
+
   const [tasks, setTasks] = useState({
     "To Do": [],
     Doing: [],

@@ -44,30 +44,43 @@ const App = () => {
             color: #000;
           }
           nav {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            font-weight: 400;
-            font-size: 14px;
-            color: #000;
-          }
-          nav a {
-            color: #000;
-          }
-          nav a.signup {
-            font-weight: 600;
-            font-size: 14px;
-            color: #3b5de7;
-            border: 1.5px solid #3b5de7;
-            border-radius: 4px;
-            padding: 6px 12px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-          }
-          nav a.signup:hover,
-          nav a.signup:focus {
-            background-color: #3b5de7;
-            color: #fff;
-          }
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-weight: 400;
+  font-size: 14px;
+  color: #000;
+}
+
+nav a,
+nav button {
+  color: #000;
+  background: none;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+nav a.signup,
+nav button.signup {
+  font-weight: 600;
+  font-size: 14px;
+  color: #3b5de7;
+  border: 1.5px solid #3b5de7;
+  border-radius: 4px;
+  padding: 6px 12px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav a.signup:hover,
+nav a.signup:focus,
+nav button.signup:hover,
+nav button.signup:focus {
+  background-color: #3b5de7;
+  color: #fff;
+}
+
           main {
             max-width: 900px;
             margin: 48px auto 64px;
@@ -471,11 +484,16 @@ const App = () => {
           <span className="logo-text">Planify</span>
         </a>
         <nav>
-          <a href="#">About Us</a>
-          <a href="/login">Sign In</a>
-          <a className="signup" href="/sign_up">
-            Sign Up For Free
-          </a>
+          <button onClick={() => (window.location.href = "#")}>About Us</button>
+          <button onClick={() => (window.location.href = "/login")}>
+            Sign In
+          </button>
+          <button
+            onClick={() => (window.location.href = "/sign_up")}
+            className="signup"
+          >
+            Sign Up for free
+          </button>
         </nav>
       </header>
 

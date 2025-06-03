@@ -14,22 +14,13 @@ const CreateAccount = () => {
       <div className="row w-100 justify-content-center align-items-center">
         <div className="col-lg-5 p-5">
           <div className="card shadow-lg rounded-4 p-4">
-            <div className="d-flex align-items-center justify-content-center gap-1 mb-2">
+            <div className="d-flex align-items-center justify-content-center gap-1 mb-3">
               <img src="logo planify new.png" width="50" alt="Planify Logo" />
               <h5 className="fw-bold mb-0">Planify</h5>
             </div>
             <div className="text-center mb-4">
-              <h2 className="fw-bold mb-2">Welcome to Planify!</h2>
-              <p className="mb-0">
-                Don’t have an account?{" "}
-                <button
-                  onClick={() => (window.location.href = "/sign_up")}
-                  className="btn btn-link p-0 m-0 align-baseline"
-                  style={{ textDecoration: "underline" }}
-                >
-                  Sign up for free
-                </button>
-              </p>
+              <h3 className="fw-bold mb-5">Hello Admin!</h3>
+              <h3 className="fw-bold mb-2">Welcome to Planify!</h3>
             </div>
             <form>
               <div className="mb-3">
@@ -69,7 +60,7 @@ const CreateAccount = () => {
               </div>
               <div className="d-flex justify-content-center mb-3">
                 <button
-                  onClick={() => (window.location.href = "/workspace")}
+                  onClick={() => (window.location.href = "/dshbrd_Admin")}
                   className="btn btn-primary fw-semibold w-100 text-center text-white"
                 >
                   Login

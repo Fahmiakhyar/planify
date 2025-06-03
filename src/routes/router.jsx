@@ -13,11 +13,21 @@ import Landingpage from "../pages/landingPage";
 import SignUp from "../pages/sign_up";
 import Login from "../pages/login";
 import Archived from "../pages/archived";
+import Payment from "../pages/paymentUp";
+import Admin from "../pages/dshbrd_Admin";
+import UserManagement from "../pages/userManagement";
+import Send from "../pages/send_Admin";
+import LoginAdmin from "../pages/login_Admin";
 
 const AppRouter = () => {
   return (
     <Router>
       <Routes>
+         {/* Router Admin */}
+         <Route path="/login_Admin" element={<LoginAdmin />} />
+         <Route path="/dshbrd_Admin" element={<Admin />} />
+         <Route path="/userManagement" element={<UserManagement />} />
+         <Route path="/send_Admin" element={<Send />} />
          {/* Router Landing Page */}
           <Route path="/" element={<Landingpage />} />
          {/* Router Login & Sign Up */}
@@ -35,6 +45,7 @@ const AppRouter = () => {
         <Route path="/setting/profile" element={<Editprofile/>} />
         <Route path="/setting/bahasa" element={<Bahasa/>} />
         <Route path="/setting/upgrade" element={<Upgrade/>} />
+        <Route path="/setting/paymentUp" element={<Payment/>} />
       </Routes>
     </Router>
   );

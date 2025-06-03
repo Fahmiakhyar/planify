@@ -11,7 +11,7 @@ const taskDetails = {
     createdBy: "img/profile.png",
     dueDate: "May 2, 2025",
     createdDate: "April 30, 2025",
-    link: "https://www.example.com/interview",
+    link: "https://www.valid-url.com/interview",
     file: "empty",
   },
   "2025-05-05": {
@@ -21,7 +21,7 @@ const taskDetails = {
     createdBy: "img/profile.png",
     dueDate: "May 5, 2025",
     createdDate: "May 1, 2025",
-    link: "https://www.example.com/big-idea",
+    link: "https://www.valid-url.com/big-idea",
     file: "empty",
   },
   "2025-05-10": {
@@ -31,7 +31,7 @@ const taskDetails = {
     createdBy: "img/profile.png",
     dueDate: "May 10, 2025",
     createdDate: "May 4, 2025",
-    link: "https://www.example.com/user-flow",
+    link: "https://www.valid-url.com/user-flow",
     file: "empty",
   },
 };
@@ -48,20 +48,13 @@ function App() {
     name: "",
     description: "",
     dueDate: "",
+    reminderDate: "",
+    reminderTime: "",
+    status: "To Do",
   });
+
   const fileInputRef = useRef(null);
   const linkInputRef = useRef(null);
-
-  // Fungsi saat ikon file diklik
-  const handleFileClick = () => {
-    fileInputRef.current.click();
-  };
-
-  // Fungsi saat ikon link diklik
-  const handleLinkClick = () => {
-    linkInputRef.current.focus();
-  };
-
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -105,7 +98,7 @@ function App() {
     taskDetails[currentDate] = {
       title: newTask.name,
       description: newTask.description,
-      status: "●",
+      status: newTask.status, // Use the status from the newTask state
       createdBy: "img/profile.png",
       dueDate: newTask.dueDate,
       createdDate: new Date().toLocaleDateString(),
@@ -113,7 +106,20 @@ function App() {
       file: "empty",
     };
     setTaskInputVisible(false);
-    setNewTask({ name: "", description: "", dueDate: "" }); // Reset form
+    setNewTask({
+      name: "",
+      description: "",
+      dueDate: "",
+      reminderDate: "",
+      reminderTime: "",
+      status: "To Do",
+    }); // Reset form
+  };
+
+  const tabRoutes = {
+    Calendar: "/Calendar",
+    Tasks: "/Task",
+    Notes: "/Notes",
   };
 
   return (
@@ -268,18 +274,9 @@ function App() {
                   </div>
                 );
 
-                // Jika tab adalah "Tasks", bungkus dengan <Link>
-                return tab === "Tasks" ? (
+                return (
                   <Link
-                    to="/Task"
-                    key={tab}
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    {tabContent}
-                  </Link>
-                ) : (
-                  <Link
-                    to="/Notes"
+                    to={tabRoutes[tab]} // arahkan ke route yang benar
                     key={tab}
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
@@ -546,13 +543,32 @@ function App() {
                   <p>{popupData.description}</p>
                   <div className="task-info">
                     <p>
-                      <strong>Status:</strong> {popupData.status}
+                      <strong>Status:</strong>{" "}
+                      {popupData.status === "●" && (
+                        <>
+                          <i className="fas fa-circle-dot text-secondary me-1"></i>{" "}
+                          To Do
+                        </>
+                      )}
+                      {popupData.status === "Doing" && (
+                        <>
+                          <i className="fas fa-spinner text-warning me-1"></i>{" "}
+                          Doing
+                        </>
+                      )}
+                      {popupData.status === "Done" && (
+                        <>
+                          <i className="fas fa-check-circle text-success me-1"></i>{" "}
+                          Done
+                        </>
+                      )}
                     </p>
+
                     <p>
                       <strong>Created by:</strong>{" "}
                       <img
                         src={popupData.createdBy}
-                        alt="User "
+                        alt="User  "
                         style={{
                           borderRadius: "50%",
                           verticalAlign: "middle",
@@ -604,7 +620,7 @@ function App() {
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      handleSaveTask(newTask);
+                      handleSaveTask();
                     }}
                   >
                     <div className="mb-3">
@@ -621,6 +637,70 @@ function App() {
                         }
                         required
                       />
+                    </div>
+
+                    <div className="mb-3">
+                      <label className="form-label d-block">Task Status</label>
+                      <div className="form-check form-check-inline">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="taskStatus"
+                          id="statusTodo"
+                          value="To Do"
+                          checked={newTask.status === "To Do"}
+                          onChange={(e) =>
+                            setNewTask({ ...newTask, status: e.target.value })
+                          }
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="statusTodo"
+                        >
+                          <i className="fas fa-circle-dot text-secondary me-1"></i>{" "}
+                          To Do
+                        </label>
+                      </div>
+                      <div className="form-check form-check-inline">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="taskStatus"
+                          id="statusDoing"
+                          value="Doing"
+                          checked={newTask.status === "Doing"}
+                          onChange={(e) =>
+                            setNewTask({ ...newTask, status: e.target.value })
+                          }
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="statusDoing"
+                        >
+                          <i className="fas fa-spinner text-warning me-1"></i>{" "}
+                          Doing
+                        </label>
+                      </div>
+                      <div className="form-check form-check-inline">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="taskStatus"
+                          id="statusDone"
+                          value="Done"
+                          checked={newTask.status === "Done"}
+                          onChange={(e) =>
+                            setNewTask({ ...newTask, status: e.target.value })
+                          }
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="statusDone"
+                        >
+                          <i className="fas fa-check-circle text-success me-1"></i>{" "}
+                          Done
+                        </label>
+                      </div>
                     </div>
 
                     <div className="mb-3">
@@ -700,7 +780,7 @@ function App() {
                       <i
                         className="fas fa-file-circle-plus icon"
                         title="Upload File"
-                        onClick={handleFileClick}
+                        onClick={() => fileInputRef.current.click()}
                       ></i>
                       <input
                         type="file"
@@ -716,7 +796,7 @@ function App() {
                       <i
                         className="fas fa-link icon ms-2"
                         title="Add Link"
-                        onClick={handleLinkClick}
+                        onClick={() => linkInputRef.current.focus()}
                       ></i>
                       <input
                         type="url"

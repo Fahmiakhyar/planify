@@ -19,10 +19,38 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-.check-icon {
-  color: green;
-  margin-right: 5px;
+.features-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+  color: #374151; /* warna teks utama */
+  font-size: 13px;
 }
+
+.features-list li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.features-list li:last-child {
+  margin-bottom: 0;
+}
+
+.features-list .check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  color: white;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: bold;
+  user-select: none;
+}
+
 
 .btn-upgrade {
   background-color: #0d6efd;
