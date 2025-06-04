@@ -2,6 +2,7 @@ import "./App.css";
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "./components/sidebar";
+import NotificationPopup from "./components/Notif";
 
 function App() {
   const [showRightSidebar, setShowRightSidebar] = useState(false);
@@ -10,6 +11,22 @@ function App() {
   const [notes, setNotes] = useState([]);
   const [noteTitle, setNoteTitle] = useState("");
   const [noteContent, setNoteContent] = useState("");
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+    const dummyNotifications = [
+      {
+        id: 1,
+        user: "Anda",
+        action: "menambahkan tugas baru ke 'To Do'",
+        time: "2 menit lalu",
+      },
+      {
+        id: 2,
+        user: "Anda",
+        action: "mengedit catatan pada 'Notes'",
+        time: "10 menit lalu",
+      },
+    ];
+  
 
   // Add state to track which note's menu is currently open
   const [activeMenuId, setActiveMenuId] = useState(null);
@@ -129,10 +146,6 @@ function App() {
             onClick={toggleRightSidebar}
           />
           <i
-            className="fas fa-folder toggle-sidebar mb-1"
-            onClick={toggleRightSidebar}
-          />
-          <i
             className="fas fa-star toggle-sidebar"
             onClick={toggleRightSidebar}
           />
@@ -177,7 +190,7 @@ function App() {
 
             <nav aria-label="User  actions" className="nav-actions">
               <button
-                aria-label="Notification"
+                aria-label="Notification"onClick={() => setIsNotifOpen(true)}
                 className="btn-icon"
                 title="Notification"
                 type="button"
@@ -417,6 +430,11 @@ function App() {
           </form>
         </div>
       </div>
+       <NotificationPopup
+        isOpen={isNotifOpen}
+        onClose={() => setIsNotifOpen(false)}
+        notifications={dummyNotifications}
+      />
     </>
   );
 }

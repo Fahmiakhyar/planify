@@ -1,11 +1,27 @@
 import React, { useState } from "react";
 import Sidebar from "../components/sidebar";
+import NotificationPopup from "../components/Notif";
 import "../pages/works.css";
 
 function App() {
   const [showRightSidebar, setShowRightSidebar] = useState(false);
   const [favorites, setFavorites] = useState([]); // Store favorites based on title
   const [archivedWorkbooks, setArchivedWorkbooks] = useState([]); // Store archived workbooks
+    const [isNotifOpen, setIsNotifOpen] = useState(false);
+    const dummyNotifications = [
+      {
+        id: 1,
+        user: "Anda",
+        action: "menambahkan tugas baru ke 'To Do'",
+        time: "2 menit lalu",
+      },
+      {
+        id: 2,
+        user: "Anda",
+        action: "mengedit catatan pada 'Notes'",
+        time: "10 menit lalu",
+      },
+    ];
 
   const toggleRightSidebar = () => {
     setShowRightSidebar(!showRightSidebar);
@@ -13,7 +29,7 @@ function App() {
 
   const handleFavoriteClick = (item) => {
     if (favorites.includes(item.title)) {
-      setFavorites(favorites.filter(title => title !== item.title)); // Remove from favorites
+      setFavorites(favorites.filter((title) => title !== item.title)); // Remove from favorites
     } else {
       setFavorites([...favorites, item.title]); // Add to favorites
     }
@@ -67,10 +83,6 @@ function App() {
             onClick={toggleRightSidebar}
           />
           <i
-            className="fas fa-folder toggle-sidebar mb-1"
-            onClick={toggleRightSidebar}
-          />
-          <i
             className="fas fa-star toggle-sidebar"
             onClick={toggleRightSidebar}
           />
@@ -115,15 +127,10 @@ function App() {
               Planify
             </div>
             <nav className="nav-actions">
-              <button className="btn-icon" aria-label="Message">
-                <i className="far fa-envelope"></i>
-              </button>
-              <button className="btn-icon" aria-label="Notification">
+              <button className="btn-icon" aria-label="Notification" onClick={() => setIsNotifOpen(true)}>
                 <i className="far fa-bell"></i>
               </button>
-              <button className="btn-icon" aria-label="Help">
-                <i className="far fa-circle-question"></i>
-              </button>
+
               <button className="premium-btn" aria-label="Go Premium">
                 Go Premium
               </button>
@@ -165,14 +172,18 @@ function App() {
                     <td>{item.createdAt}</td>
                     <td>
                       <i
-                        className={`fas fa-star ${favorites.includes(item.title) ? 'text-warning' : 'text-muted'}`}
+                        className={`fas fa-star ${
+                          favorites.includes(item.title)
+                            ? "text-warning"
+                            : "text-muted"
+                        }`}
                         onClick={() => handleFavoriteClick(item)}
-                        style={{ cursor: 'pointer', transition: '0.3s ease' }}
+                        style={{ cursor: "pointer", transition: "0.3s ease" }}
                       />
                       <i
                         className="fas fa-archive ms-2"
                         onClick={() => handleArchiveClick(item)}
-                        style={{ cursor: 'pointer', transition: '0.3s ease' }}
+                        style={{ cursor: "pointer", transition: "0.3s ease" }}
                       />
                     </td>
                   </tr>
@@ -213,6 +224,12 @@ function App() {
           </div>
         </main>
       </div>
+      {/* Notification Popup */}
+      <NotificationPopup
+        isOpen={isNotifOpen}
+        onClose={() => setIsNotifOpen(false)}
+        notifications={dummyNotifications}
+      />
     </>
   );
 }

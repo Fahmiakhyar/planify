@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "../components/sidebar";
+import NotificationPopup from "../components/Notif";
+
 import "../pages/task.css";
 
 function App() {
@@ -21,8 +23,25 @@ function App() {
     Done: [],
   });
   const [currentColumn, setCurrentColumn] = useState("To Do");
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+
   const fileInputRef = useRef(null);
   const linkInputRef = useRef(null);
+
+  const dummyNotifications = [
+    {
+      id: 1,
+      user: "Anda",
+      action: "menambahkan tugas baru ke 'To Do'",
+      time: "2 menit lalu",
+    },
+    {
+      id: 2,
+      user: "Anda",
+      action: "mengedit catatan pada 'Notes'",
+      time: "10 menit lalu",
+    },
+  ];
 
   const toggleRightSidebar = () => {
     setShowRightSidebar(!showRightSidebar);
@@ -62,6 +81,7 @@ function App() {
     updatedTasks.splice(index, 1);
     setTasks({ ...tasks, [column]: updatedTasks });
   };
+
   const tabRoutes = {
     Calendar: "/kalender",
     Tasks: "/task",
@@ -84,51 +104,23 @@ function App() {
 
       <div className="d-flex">
         <div className="sidebar-left">
-          <i
-            className="fas fa-home toggle-sidebar mb-2"
-            onClick={toggleRightSidebar}
-          />
-          <i
-            className="fas fa-clock toggle-sidebar mb-2"
-            onClick={toggleRightSidebar}
-          />
-          <i
-            className="fas fa-folder toggle-sidebar mb-1"
-            onClick={toggleRightSidebar}
-          />
-          <i
-            className="fas fa-star toggle-sidebar"
-            onClick={toggleRightSidebar}
-          />
+          <i className="fas fa-home toggle-sidebar mb-2" onClick={toggleRightSidebar} />
+          <i className="fas fa-clock toggle-sidebar mb-2" onClick={toggleRightSidebar} />
+          <i className="fas fa-star toggle-sidebar" onClick={toggleRightSidebar} />
           <div className="sidebar-bottom-icons">
-            <i
-              className="fas fa-gem toggle-sidebar mb-1"
-              onClick={toggleRightSidebar}
-            />
-            <i
-              className="fas fa-cog toggle-sidebar mb-1"
-              onClick={toggleRightSidebar}
-            />
-            <i
-              className="fas fa-sign-out-alt toggle-sidebar"
-              onClick={toggleRightSidebar}
-            />
+            <i className="fas fa-gem toggle-sidebar mb-1" onClick={toggleRightSidebar} />
+            <i className="fas fa-cog toggle-sidebar mb-1" onClick={toggleRightSidebar} />
+            <i className="fas fa-sign-out-alt toggle-sidebar" onClick={toggleRightSidebar} />
           </div>
         </div>
 
-        <div
-          className={`sidebar-right ${showRightSidebar ? "show" : ""}`}
-          aria-hidden={!showRightSidebar}
-        >
+        <div className={`sidebar-right ${showRightSidebar ? "show" : ""}`} aria-hidden={!showRightSidebar}>
           <Sidebar />
         </div>
 
         <main className="content flex-grow-1" role="main">
           <header className="app-header" role="banner">
-            <div
-              aria-label="Planify logo"
-              className="logo d-flex align-items-center"
-            >
+            <div aria-label="Planify logo" className="logo d-flex align-items-center">
               <img
                 src="/logo%20planify%20new.png"
                 alt="Planify Logo"
@@ -139,8 +131,8 @@ function App() {
               Planify
             </div>
 
-            <nav aria-label="User  actions" className="nav-actions">
-              <button className="btn-icon" aria-label="Notification">
+            <nav aria-label="User actions" className="nav-actions">
+              <button className="btn-icon" aria-label="Notification" onClick={() => setIsNotifOpen(true)}>
                 <i className="far fa-bell"></i>
               </button>
               <button className="premium-btn" aria-label="Go Premium">
@@ -149,7 +141,7 @@ function App() {
               <img
                 className="user-avatar"
                 src="https://storage.googleapis.com/a1aa/image/b1775588-94f7-4a59-b686-0a1dddb0891b.jpg"
-                alt="User  Avatar"
+                alt="User Avatar"
                 width="40"
                 height="40"
               />
@@ -162,43 +154,29 @@ function App() {
             </div>
 
             <nav aria-label="Workbook tabs" className="tab-nav" role="tablist">
-              {["Calendar", "Tasks", "Notes"].map((tab) => {
+              {Object.keys(tabRoutes).map((tab) => {
                 const iconClass =
-                  tab === "Calendar"
-                    ? "calendar"
-                    : tab === "Tasks"
-                    ? "tasks"
-                    : "sticky-note";
-
-                const tabContent = (
-                  <div
-                    key={tab}
-                    className={`tab-item ${activeTab === tab ? "active" : ""}`}
-                    onClick={() => handleTabClick(tab)}
-                    role="tab"
-                    aria-selected={activeTab === tab}
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        handleTabClick(tab);
-                      }
-                    }}
-                  >
-                    <i
-                      className={`fas fa-${iconClass}`}
-                      style={{ marginRight: "6px" }}
-                    />
-                    {tab}
-                  </div>
-                );
+                  tab === "Calendar" ? "calendar" : tab === "Tasks" ? "tasks" : "sticky-note";
 
                 return (
                   <Link
-                    to={tabRoutes[tab]} // arahkan sesuai tab
+                    to={tabRoutes[tab]}
                     key={tab}
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
-                    {tabContent}
+                    <div
+                      className={`tab-item ${activeTab === tab ? "active" : ""}`}
+                      onClick={() => handleTabClick(tab)}
+                      role="tab"
+                      aria-selected={activeTab === tab}
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") handleTabClick(tab);
+                      }}
+                    >
+                      <i className={`fas fa-${iconClass}`} style={{ marginRight: "6px" }} />
+                      {tab}
+                    </div>
                   </Link>
                 );
               })}
@@ -214,26 +192,16 @@ function App() {
                     {tasks[column].map((task, index) => (
                       <div className="task-card" key={index}>
                         <div className="task-title">{task.name}</div>
-                        <div className="task-description">
-                          {task.description}
-                        </div>
+                        <div className="task-description">{task.description}</div>
                         <div className="task-due-date">Due: {task.dueDate}</div>
-                        <div className="task-reminder">
-                          Reminder: {task.reminderDate}
-                        </div>
-                        <button
-                          className="btn btn-sm btn-danger mt-2"
-                          onClick={() => deleteTask(column, index)}
-                        >
+                        <div className="task-reminder">Reminder: {task.reminderDate}</div>
+                        <button className="btn btn-sm btn-danger mt-2" onClick={() => deleteTask(column, index)}>
                           Delete
                         </button>
                       </div>
                     ))}
                   </div>
-                  <button
-                    className="add-list-btn"
-                    onClick={() => openPopup(column)}
-                  >
+                  <button className="add-list-btn" onClick={() => openPopup(column)}>
                     + Add List
                   </button>
                 </div>
@@ -246,16 +214,10 @@ function App() {
       {taskInputVisible && (
         <div className="modal2" style={{ display: "flex" }}>
           <div className="modal-content2">
-            <span
-              className="close-btn"
-              onClick={closePopup}
-              style={{ cursor: "pointer" }}
-            >
+            <span className="close-btn" onClick={closePopup} style={{ cursor: "pointer" }}>
               &times;
             </span>
-            <h4 style={{ paddingBottom: "30px", textAlign: "center" }}>
-              Add New Task
-            </h4>
+            <h4 style={{ paddingBottom: "30px", textAlign: "center" }}>Add New Task</h4>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -264,32 +226,24 @@ function App() {
             >
               <div className="row mb-3">
                 <div className="col-md-6">
-                  <label htmlFor="taskName" className="form-label">
-                    Task Name
-                  </label>
+                  <label htmlFor="taskName" className="form-label">Task Name</label>
                   <input
                     type="text"
                     id="taskName"
                     className="form-control"
                     value={newTask.name}
-                    onChange={(e) =>
-                      setNewTask({ ...newTask, name: e.target.value })
-                    }
+                    onChange={(e) => setNewTask({ ...newTask, name: e.target.value })}
                     required
                   />
                 </div>
 
                 <div className="col-md-6">
-                  <label htmlFor="taskDescription" className="form-label">
-                    Description
-                  </label>
+                  <label htmlFor="taskDescription" className="form-label">Description</label>
                   <textarea
                     id="taskDescription"
                     className="form-control"
                     value={newTask.description}
-                    onChange={(e) =>
-                      setNewTask({ ...newTask, description: e.target.value })
-                    }
+                    onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
                     required
                   />
                 </div>
@@ -297,33 +251,25 @@ function App() {
 
               <div className="row mb-3">
                 <div className="col-md-6">
-                  <label htmlFor="taskDueDate" className="form-label">
-                    Due Date
-                  </label>
+                  <label htmlFor="taskDueDate" className="form-label">Due Date</label>
                   <input
                     type="date"
                     id="taskDueDate"
                     className="form-control"
                     value={newTask.dueDate}
-                    onChange={(e) =>
-                      setNewTask({ ...newTask, dueDate: e.target.value })
-                    }
+                    onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
                     required
                   />
                 </div>
 
                 <div className="col-md-6">
-                  <label htmlFor="taskReminderDate" className="form-label">
-                    Due Date Reminder
-                  </label>
+                  <label htmlFor="taskReminderDate" className="form-label">Due Date Reminder</label>
                   <input
                     type="date"
                     id="taskReminderDate"
                     className="form-control"
                     value={newTask.reminderDate}
-                    onChange={(e) =>
-                      setNewTask({ ...newTask, reminderDate: e.target.value })
-                    }
+                    onChange={(e) => setNewTask({ ...newTask, reminderDate: e.target.value })}
                     required
                   />
                 </div>
@@ -331,26 +277,19 @@ function App() {
 
               <div className="row mb-3">
                 <div className="col-md-6">
-                  <label htmlFor="taskReminderTime" className="form-label">
-                    Reminder Time
-                  </label>
+                  <label htmlFor="taskReminderTime" className="form-label">Reminder Time</label>
                   <input
                     type="time"
                     id="taskReminderTime"
                     className="form-control"
                     value={newTask.reminderTime}
-                    onChange={(e) =>
-                      setNewTask({ ...newTask, reminderTime: e.target.value })
-                    }
+                    onChange={(e) => setNewTask({ ...newTask, reminderTime: e.target.value })}
                     required
                   />
                 </div>
 
                 <div className="col-md-6">
-                  <div
-                    className="icon-container mb-3"
-                    style={{ marginTop: "25px" }}
-                  >
+                  <div className="icon-container mb-3" style={{ marginTop: "25px" }}>
                     <i
                       className="fas fa-file-circle-plus icon"
                       title="Upload File"
@@ -365,34 +304,39 @@ function App() {
                         alert(`File selected: ${file?.name}`);
                       }}
                     />
-
                     <i
-                      className="fas fa-link icon ms-2"
+                      className="fas fa-link icon"
                       title="Add Link"
                       onClick={() => linkInputRef.current.focus()}
                     ></i>
                     <input
-                      type="url"
+                      type="text"
                       ref={linkInputRef}
-                      placeholder="https://example.com"
-                      className="hidden-link-input"
-                      onChange={(e) => {
-                        alert(`Link entered: ${e.target.value}`);
-                      }}
+                      placeholder="Add link"
+                      style={{ display: "none" }}
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="text-end">
-                <button type="submit" className="btn btn-primary">
-                  Save Task
-                </button>
+              <div className="row justify-content-end">
+                <div className="col-auto">
+                  <button type="submit" className="btn btn-primary">
+                    Save
+                  </button>
+                </div>
               </div>
             </form>
           </div>
         </div>
       )}
+
+      {/* Notification Popup */}
+      <NotificationPopup
+        isOpen={isNotifOpen}
+        onClose={() => setIsNotifOpen(false)}
+        notifications={dummyNotifications}
+      />
     </>
   );
 }

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Sidebar from "../components/sidebar";
+import NotificationPopup from "../components/Notif";
 import "../pages/works.css";
 
 function App() {
@@ -25,6 +26,21 @@ function App() {
       createdAt: "2 hours ago",
     },
   ]);
+    const [isNotifOpen, setIsNotifOpen] = useState(false);
+    const dummyNotifications = [
+      {
+        id: 1,
+        user: "Anda",
+        action: "menambahkan tugas baru ke 'To Do'",
+        time: "2 menit lalu",
+      },
+      {
+        id: 2,
+        user: "Anda",
+        action: "mengedit catatan pada 'Notes'",
+        time: "10 menit lalu",
+      },
+    ];
 
   const [title, setTitle] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
@@ -149,10 +165,6 @@ function App() {
             onClick={toggleRightSidebar}
           />
           <i
-            className="fas fa-folder toggle-sidebar mb-1"
-            onClick={toggleRightSidebar}
-          />
-          <i
             className="fas fa-star toggle-sidebar"
             onClick={toggleRightSidebar}
           />
@@ -196,7 +208,7 @@ function App() {
             </div>
 
             <nav aria-label="User  actions" className="nav-actions">
-              <button className="btn-icon" aria-label="Notification">
+              <button className="btn-icon" aria-label="Notification" onClick={() => setIsNotifOpen(true)}>
                 <i className="far fa-bell"></i>
               </button>
               <button className="premium-btn" aria-label="Go Premium">
@@ -478,6 +490,12 @@ function App() {
           </div>
         </main>
       </div>
+      {/* Notification Popup */}
+      <NotificationPopup
+        isOpen={isNotifOpen}
+        onClose={() => setIsNotifOpen(false)}
+        notifications={dummyNotifications}
+      />
     </>
   );
 }

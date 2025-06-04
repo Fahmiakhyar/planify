@@ -1,74 +1,75 @@
-
 export default function Sidebar() {
   return (
-<div>
-  <ul>
-    <li
-      onClick={() => window.location.href = "/workspace"}
-      className={`nav-item ${window.location.pathname === "/workspace" ? "active2" : ""}`}
-    >
-      <i className="fas fa-home me-2"></i> Dashboard
-    </li>
+    <div>
+      <ul>
+        <li
+          onClick={() => (window.location.href = "/workspace")}
+          className={`nav-item ${
+            window.location.pathname === "/workspace" ? "active2" : ""
+          }`}
+        >
+          <i className="fas fa-home me-2"></i> Dashboard
+        </li>
 
-    <li
-      onClick={() => window.location.href = "/recentFile"}
-      className={`nav-item ${window.location.pathname === "/recentFile" ? "active2" : ""}`}
-    >
-      <i className="fas fa-clock me-2"></i> Recent
-    </li>
+        <li
+          onClick={() => (window.location.href = "/recentFile")}
+          className={`nav-item ${
+            window.location.pathname === "/recentFile" ? "active2" : ""
+          }`}
+        >
+          <i className="fas fa-clock me-2"></i> Recent
+        </li>
 
-    <li
-      onClick={() => window.location.href = "/shared"}
-      className={`nav-item ${window.location.pathname === "/shared" ? "active2" : ""}`}
-    >
-      <i className="fas fa-folder me-2"></i> Shared
-    </li>
+        <li
+          onClick={() => (window.location.href = "/favorite")}
+          className={`nav-item ${
+            window.location.pathname === "/favorite" ? "active" : ""
+          }`}
+        >
+          <i className="fas fa-star me-2"></i> Favorites
+        </li>
+      </ul>
 
-    <li
-      onClick={() => window.location.href = "/favorite"}
-      className={`nav-item ${window.location.pathname === "/favorite" ? "active" : ""}`}
-    >
-      <i className="fas fa-star me-2"></i> Favorites
-    </li>
-  </ul>
+      <div className="premium-box text-center p-3 border rounded">
+        <i
+          className="fas fa-gem "
+          style={{ fontSize: "2rem", color: "#4361ee" }}
+        ></i>
+        <p className="mb-1">
+          <strong>Current plan:</strong>
+          <br />
+          Free Trial
+        </p>
+        <small>Upgrade to Premium to get exclusive features</small>
+        <div
+          className="btn btn-sm w-100 rounded-pill mt-2"
+          role="button"
+          onClick={() => (window.location.href = "/setting/upgrade")}
+          style={{ cursor: "pointer" }}
+        >
+          ⚡ Go Premium
+        </div>
+      </div>
 
-  <div className="premium-box text-center p-3 border rounded">
-    <i
-      className="fas fa-gem "
-      style={{ fontSize: "2rem", color: "#4361ee" }}
-    ></i>
-    <p className="mb-1">
-      <strong>Current plan:</strong>
-      <br />
-      Free Trial
-    </p>
-    <small>Upgrade to Premium to get exclusive features</small>
-    <div
-      className="btn btn-sm w-100 rounded-pill mt-2"
-      role="button"
-      onClick={() => window.location.href = "/setting/upgrade"}
-      style={{ cursor: "pointer" }}
-    >
-      ⚡ Go Premium
+      <ul>
+        <li
+          onClick={() => (window.location.href = "/setting/profile")}
+          className={`bottom-menu nav-item ${
+            window.location.pathname === "/setting/profile" ? "active" : ""
+          }`}
+        >
+          <i className="fas fa-cog me-2"></i> Setting
+        </li>
+
+        <li
+          onClick={() => (window.location.href = "/")}
+          className={`nav-item ${
+            window.location.pathname === "/logout" ? "active" : ""
+          }`}
+        >
+          <i className="fas fa-sign-out-alt me-2"></i> Logout
+        </li>
+      </ul>
     </div>
-  </div>
-
-  <ul>
-    <li
-      onClick={() => window.location.href = "/setting/profile"}
-      className={`bottom-menu nav-item ${window.location.pathname === "/setting/profile" ? "active" : ""}`}
-    >
-      <i className="fas fa-cog me-2"></i> Setting
-    </li>
-
-    <li
-      onClick={() => window.location.href = "/"}
-      className={`nav-item ${window.location.pathname === "/logout" ? "active" : ""}`}
-    >
-      <i className="fas fa-sign-out-alt me-2"></i> Logout
-    </li>
-  </ul>
-</div>
-
   );
 }

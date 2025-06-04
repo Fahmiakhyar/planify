@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "../components/sidebar";
+import NotificationPopup from "../components/Notif";
 import "../pages/kalender.css";
 
 const taskDetails = {
@@ -44,6 +45,22 @@ function App() {
   const [popupData, setPopupData] = useState({});
   const [taskInputVisible, setTaskInputVisible] = useState(false);
   const [currentDate, setCurrentDate] = useState("");
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+    const dummyNotifications = [
+      {
+        id: 1,
+        user: "Anda",
+        action: "menambahkan tugas baru ke 'To Do'",
+        time: "2 menit lalu",
+      },
+      {
+        id: 2,
+        user: "Anda",
+        action: "mengedit catatan pada 'Notes'",
+        time: "10 menit lalu",
+      },
+    ];
+  
   const [newTask, setNewTask] = useState({
     name: "",
     description: "",
@@ -147,10 +164,6 @@ function App() {
             onClick={toggleRightSidebar}
           />
           <i
-            className="fas fa-folder toggle-sidebar mb-1"
-            onClick={toggleRightSidebar}
-          />
-          <i
             className="fas fa-star toggle-sidebar"
             onClick={toggleRightSidebar}
           />
@@ -195,7 +208,7 @@ function App() {
 
             <nav aria-label="User  actions" className="nav-actions">
               <button
-                aria-label="Notification"
+                aria-label="Notification" onClick={() => setIsNotifOpen(true)}
                 className="btn-icon"
                 title="Notification"
                 type="button"
@@ -861,6 +874,12 @@ function App() {
           </section>
         </main>
       </div>
+      {/* Notification Popup */}
+      <NotificationPopup
+        isOpen={isNotifOpen}
+        onClose={() => setIsNotifOpen(false)}
+        notifications={dummyNotifications}
+      />
     </>
   );
 }

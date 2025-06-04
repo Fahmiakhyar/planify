@@ -1,10 +1,27 @@
 import React, { useState } from "react";
 import Sidebar from "../components/sidebar";
+import NotificationPopup from "../components/Notif";
 import "../pages/works.css";
 
 function App() {
   const [showRightSidebar, setShowRightSidebar] = useState(false);
   const [favorites, setFavorites] = useState([]);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+    const dummyNotifications = [
+      {
+        id: 1,
+        user: "Anda",
+        action: "menambahkan tugas baru ke 'To Do'",
+        time: "2 menit lalu",
+      },
+      {
+        id: 2,
+        user: "Anda",
+        action: "mengedit catatan pada 'Notes'",
+        time: "10 menit lalu",
+      },
+    ];
+  
 
   const toggleRightSidebar = () => {
     setShowRightSidebar(!showRightSidebar);
@@ -55,7 +72,6 @@ function App() {
         <div className="sidebar-left">
           <i className="fas fa-home toggle-sidebar mb-2" onClick={toggleRightSidebar} />
           <i className="fas fa-clock toggle-sidebar mb-2" onClick={toggleRightSidebar} />
-          <i className="fas fa-folder toggle-sidebar mb-1" onClick={toggleRightSidebar} />
           <i className="fas fa-star toggle-sidebar" onClick={toggleRightSidebar} />
           <div className="sidebar-bottom-icons">
             <i className="fas fa-gem toggle-sidebar mb-1" onClick={toggleRightSidebar} />
@@ -82,15 +98,10 @@ function App() {
               Planify
             </div>
             <nav className="nav-actions">
-              <button className="btn-icon" aria-label="Message">
-                <i className="far fa-envelope"></i>
-              </button>
-              <button className="btn-icon" aria-label="Notification">
+              <button className="btn-icon" aria-label="Notification"  onClick={() => setIsNotifOpen(true)}>
                 <i className="far fa-bell"></i>
               </button>
-              <button className="btn-icon" aria-label="Help">
-                <i className="far fa-circle-question"></i>
-              </button>
+              
               <button className="premium-btn" aria-label="Go Premium">
                 Go Premium
               </button>
@@ -140,6 +151,12 @@ function App() {
           </div>
         </main>
       </div>
+      {/* Notification Popup */}
+      <NotificationPopup
+        isOpen={isNotifOpen}
+        onClose={() => setIsNotifOpen(false)}
+        notifications={dummyNotifications}
+      />
     </>
   );
 }

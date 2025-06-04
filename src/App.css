@@ -33,6 +33,7 @@ body {
   margin: 20px 0; /* Maintain spacing between icons */
   cursor: pointer;
   text-align: center; /* Center icons */
+  
 }
 
 /* Sidebar kanan */
@@ -94,7 +95,7 @@ body {
   padding: 15px;
   padding-bottom: 10px;
   text-align: center;
-  margin-top: 65px;
+  margin-top: 100px;
   margin-bottom: 10px;
 }
 
@@ -110,14 +111,14 @@ body {
   color: #3f5fff;
 }
 .sidebar-right ul li.bottom-menu {
-  margin-top: 17px;
+  margin-top: 30px;
 }
 
 /* Menu bawah Setting & Logout */
 .sidebar-bottom-icons {
   display: flex;
   flex-direction: column;
-  margin-top: 200px; /* Adjust as needed */
+  margin-top: 250px; /* Adjust as needed */
 }
 
 .content {
