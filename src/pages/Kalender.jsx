@@ -407,7 +407,27 @@ function App() {
                               )}`
                             ] && (
                               <div
-                                className="event event-blue"
+                                className={`event ${
+                                  taskDetails[
+                                    `${months[currentMonthIndex].year}-${String(
+                                      currentMonthIndex + 1
+                                    ).padStart(2, "0")}-${String(
+                                      dayNumber
+                                    ).padStart(2, "0")}`
+                                  ].status === "To Do"
+                                    ? "event-blue"
+                                    : taskDetails[
+                                        `${
+                                          months[currentMonthIndex].year
+                                        }-${String(
+                                          currentMonthIndex + 1
+                                        ).padStart(2, "0")}-${String(
+                                          dayNumber
+                                        ).padStart(2, "0")}`
+                                      ].status === "Doing"
+                                    ? "event-yellow"
+                                    : "event-green" // Status "Done"
+                                }`}
                                 title={
                                   taskDetails[
                                     `${months[currentMonthIndex].year}-${String(

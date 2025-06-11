@@ -161,6 +161,10 @@
 .event-green {
   background-color: #06d6a0;
 }
+.event-yellow {
+  background-color: yellow; /* Warna untuk Doing */
+  color: black;
+}
 
 .modal {
   position: fixed;
