@@ -602,11 +602,8 @@ function App() {
                             type="radio"
                             name="taskStatus"
                             id="statusTodo"
-                            value="To Do"
-                            checked={
-                              newTask.status ===
-                              "To                            Do"
-                            }
+                            value="To Do" // Pastikan ada spasi di sini
+                            checked={newTask.status === "To Do"} // Pastikan perbandingan juga menggunakan "To Do"
                             onChange={(e) =>
                               setNewTask({ ...newTask, status: e.target.value })
                             }
@@ -621,7 +618,7 @@ function App() {
                               borderRadius: "20px",
                             }}
                           >
-                            <i className=" text-secondary me-1"></i> To Do
+                            <i className="text-secondary me-1"></i> To Do
                           </label>
                         </div>
                         <div className="form-check form-check-inline">
@@ -646,7 +643,7 @@ function App() {
                               borderRadius: "20px",
                             }}
                           >
-                            <i className=" text-warning me-1"></i> Doing
+                            <i className="text-warning me-1"></i> Doing
                           </label>
                         </div>
                         <div className="form-check form-check-inline">
@@ -671,7 +668,7 @@ function App() {
                               borderRadius: "20px",
                             }}
                           >
-                            <i className=" text-success me-1"></i> Done
+                            <i className="text-success me-1"></i> Done
                           </label>
                         </div>
                       </div>

@@ -74,9 +74,11 @@ const PaymentPage = () => {
             <h2>Upgrade your Plan</h2>
           </div>
 
-          <div className="plan-info">
-            <h2>Rp49.999,00/month</h2>
-            <p>Level up productivity and creativity with expanded access</p>
+          <div className="plan-info card-box">
+            <h2 className="price">Rp49.999,00/month</h2>
+            <p className="description">
+              Level up productivity and creativity with expanded access
+            </p>
             <ul className="features-list">
               <li>✔ Access to group chat</li>
               <li>✔ Customize card backgrounds</li>
@@ -109,8 +111,16 @@ const PaymentPage = () => {
         <div className="right-panel">
           <div className="contact-info">
             <h3>Contact Information</h3>
-            <input type="email" placeholder="Email" defaultValue="angeliaayu@gmail.com" />
-            <input type="tel" placeholder="No Telp" defaultValue="085700000000" />
+            <input
+              type="email"
+              placeholder="Email"
+              defaultValue="angeliaayu@gmail.com"
+            />
+            <input
+              type="tel"
+              placeholder="No Telp"
+              defaultValue="085700000000"
+            />
           </div>
 
           <div className="payment-info">
@@ -119,7 +129,8 @@ const PaymentPage = () => {
             {/* Transfer Bank */}
             <div className="bank-transfer mb-6">
               <p className="text-gray-600 mb-4">
-                Transfer ke salah satu rekening di bawah ini dengan nominal yang tepat:
+                Transfer ke salah satu rekening di bawah ini dengan nominal yang
+                tepat:
               </p>
 
               {/* BCA */}
@@ -133,10 +144,14 @@ const PaymentPage = () => {
                     <span>No. Rekening:</span>
                     <div className="copy-field">
                       <span className="bank-number">1234567890</span>
-                      <button onClick={() => copyToClipboard("1234567890")}>Copy</button>
+                      <button onClick={() => copyToClipboard("1234567890")}>
+                        Copy
+                      </button>
                     </div>
                   </div>
-                  <p>a.n. <strong>PLANIFY INDONESIA</strong></p>
+                  <p>
+                    a.n. <strong>PLANIFY INDONESIA</strong>
+                  </p>
                 </div>
               </div>
 
@@ -151,16 +166,23 @@ const PaymentPage = () => {
                     <span>No. Rekening:</span>
                     <div className="copy-field">
                       <span className="bank-number">0987654321</span>
-                      <button onClick={() => copyToClipboard("0987654321")}>Copy</button>
+                      <button onClick={() => copyToClipboard("0987654321")}>
+                        Copy
+                      </button>
                     </div>
                   </div>
-                  <p>a.n. <strong>PLANIFY INDONESIA</strong></p>
+                  <p>
+                    a.n. <strong>PLANIFY INDONESIA</strong>
+                  </p>
                 </div>
               </div>
 
               {/* Peringatan */}
               <div className="notice">
-                <p><strong>Penting:</strong> Transfer dengan nominal tepat Rp49.999,00 dan simpan bukti transfer.</p>
+                <p>
+                  <strong>Penting:</strong> Transfer dengan nominal tepat
+                  Rp49.999,00 dan simpan bukti transfer.
+                </p>
               </div>
             </div>
 
@@ -189,7 +211,10 @@ const PaymentPage = () => {
 
           <div className="payment-confirmation">
             <div style={{ display: "flex", justifyContent: "center" }}>
-              <button className="confirm-btn txt-center" onClick={handleConfirmPayment}>
+              <button
+                className="confirm-btn txt-center"
+                onClick={handleConfirmPayment}
+              >
                 I've Paid
               </button>
             </div>
@@ -202,10 +227,18 @@ const PaymentPage = () => {
       {isModalOpen && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={closeModal}>&times;</span>
+            <span className="close" onClick={closeModal}>
+              &times;
+            </span>
             <h2>Thank you for your payment!</h2>
-            <p>After scanning the QR code, please wait a moment while we confirm your payment.</p>
-            <button className="btn-enjoy" onClick={() => (window.location.href = "/workspace")}>
+            <p>
+              After scanning the QR code, please wait a moment while we confirm
+              your payment.
+            </p>
+            <button
+              className="btn-enjoy"
+              onClick={() => (window.location.href = "/workspace")}
+            >
               Enjoy Premium Now
             </button>
           </div>

@@ -1,239 +1,297 @@
+/* Container utama */
 .payment-container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 2rem;
-  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.logo-top {
-  position: absolute;
-  top: 16px;
-  left: 70px;
-}
-
+/* Konten utama (2 panel) */
 .payment-content {
   display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
+  flex-direction: row;
+  align-items: stretch;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 100%;
+  max-width: 1000px;
 }
 
+/* Panel kiri */
 .left-panel {
   flex: 1;
-  min-width: 300px;
-  padding: 0;
-  background: #f9f9f9;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.05);
-}
-.right-panel{
-  flex: 1;
-  min-width: 300px;
-  padding: 1.5rem;
-  background: #d1e6fd;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.05);
-}
-
-.plan-info ul {
-  list-style: none;
-  padding: 0;
-}
-
-.plan-info ul li {
-  margin: 0.5rem 0;
-}
-
-.contact-info input {
-  width: 100%;
-  padding: 0.7rem;
-  margin: 0.5rem 0;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-
-.payment-info{
-  margin-bottom: 200px;
-}
-
-.payment-confirmation {
+  padding: 40px;
+  background-color: #fff;
+  border-right: 1px solid #ddd;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  justify-content: space-between;
 }
 
-.confirm-btn {
-  padding: 0.8rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.confirm-btn {
-  background-color: #2563eb;
-  color: white;
-  width: 120px;
-}
-
-.btn {
-  color: blue;
-}
-.features-list .check {
-  color: green;
-  margin-right: 8px;
-  font-weight: bold;
-}
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+/* Panel kanan */
+.right-panel {
+  flex: 1;
+  padding: 40px;
+  background-color: #f0f4ff;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  width: 500px;
+/* Header */
+.header {
+  margin-bottom: -200px;
 }
 
-.close {
-  position: absolute; /* Change to absolute positioning */
-  top: 0px; /* Adjust vertical position */
-  right: 10px; /* Adjust horizontal position */
-  cursor: pointer;
-  font-size: 30px;
-}
-
-.btn-enjoy {
-  background-color: #007BFF; /* Original background color */
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s; /* Smooth transition */
-}
-
-.btn-enjoy:hover {
-  background-color: #0056b3; /* Darker shade on hover */
-}
-/* Gaya umum untuk kartu bank */
-.bank-card {
-  width: 400px; /* Lebar kartu */
-  background-color: #fff; /* Warna latar putih */
-  border-radius: 10px; /* Sudut membulat */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bayangan halus */
-  padding: 20px;
-  margin: 15px auto; /* Jarak antar kartu dan posisi tengah */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  
-}
-
-/* Bagian header kartu bank */
-.bank-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-/* Kotak ikon bank */
-.bank-icon {
-  color: #fff;
-  font-weight: 700;
+.header .logo {
   font-size: 20px;
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 15px;
-  user-select: none; /* Tidak bisa diseleksi teks */
+  font-weight: bold;
+  color: #2c3e50;
 }
 
-/* Warna latar ikon untuk masing-masing bank */
-.bri-bg {
-  background-color: #00458b; /* Biru BCA */
+/* Ringkasan */
+.order-summary {
+  margin-top: -100px;
 }
 
-.bca-bg {
-  background-color: #ff4a00; /* Oranye BRI */
+.order-summary h3 {
+  margin-bottom: 10px;
 }
 
-/* Nama bank */
-.bank-name {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-}
-
-/* Detail isi kartu */
-.bank-details {
-  font-size: 15px;
-  color: #555;
-}
-
-/* Baris detail seperti nomor rekening */
-.detail-row {
+.summary-row {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.total {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Info kontak & pembayaran */
+.contact-info input,
+.payment-info input {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+/* Kartu Bank */
+.bank-card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 16px;
+  background-color: #fafafa;
+}
+
+.bank-header {
+  display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
 
-/* Area nomor rekening + tombol copy */
+.bank-icon {
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.bca-bg {
+  background-color: #0066cc;
+}
+
+.bri-bg {
+  background-color: #00923f;
+}
+
+.bank-details .detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
 .copy-field {
   display: flex;
   align-items: center;
-  gap: 10px;
 }
 
-/* Nomor rekening */
-.bank-number {
-  font-weight: 600;
-  font-size: 16px;
-  user-select: text; /* Bisa diseleksi */
-}
-
-/* Tombol copy */
 .copy-field button {
-  padding: 5px 12px;
-  background-color: #007bff;
+  margin-left: 10px;
+  padding: 5px 10px;
   border: none;
-  border-radius: 5px;
+  background-color: #007bff;
   color: white;
-  font-weight: 600;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
 .copy-field button:hover {
   background-color: #0056b3;
 }
 
-/* Nama pemilik rekening */
-.bank-details p {
-  margin-top: 10px;
+/* Notice */
+.notice {
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 16px;
   font-size: 14px;
-  color: #222;
 }
 
-.bank-details strong {
-  font-weight: 700;
+/* Upload */
+.qr-code-upload {
+  margin-top: 20px;
 }
 
+/* Tombol */
+.confirm-btn {
+  background: linear-gradient(to right, #0019e0 0%, #6f7ce0 50%, #0019e0 100%);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
 
+.confirm-btn:hover {
+  background-color: #27ae60;
+}
 
+.btn {
+  margin-top: 16px;
+  background: none;
+  margin-left: 100px;
+  border: none;
+  color: #3498db;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.btn:hover {
+  color: #21618c;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content .close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.modal-content .close:hover {
+  color: #333;
+}
+
+.btn-enjoy {
+  margin-top: 20px;
+  padding: 12px 24px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-enjoy:hover {
+  background-color: #2e86c1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .payment-content {
+    flex-direction: column;
+  }
+
+  .left-panel,
+  .right-panel {
+    padding: 20px;
+  }
+}
+/* Card Style untuk Plan Info */
+.card-box {
+  background: linear-gradient(
+    to bottom right,
+    #e1e8fc 0%,
+    rgba(225, 232, 252, 0) 100%
+  );
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 25px;
+  height: 400px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.card-box .price {
+  font-size: 22px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.card-box .description {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.card-box .features-list {
+  list-style: none;
+  padding: 0;
+}
+
+.card-box .features-list li {
+  margin-bottom: 8px;
+  color: #2d3436;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
