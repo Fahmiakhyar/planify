@@ -26,7 +26,7 @@ const taskDetails = {
     file: "empty",
   },
   "2025-05-10": {
-    title: "User  Flow",
+    title: "User   Flow",
     description: "Finalize user flow design.",
     status: "●",
     createdBy: "img/profile.png",
@@ -35,6 +35,27 @@ const taskDetails = {
     link: "https://www.valid-url.com/user-flow",
     file: "empty",
   },
+};
+
+const months = [
+  { name: "January", year: 2025 },
+  { name: "February", year: 2025 },
+  { name: "March", year: 2025 },
+  { name: "April", year: 2025 },
+  { name: "May", year: 2025 },
+  { name: "June", year: 2025 },
+  { name: "July", year: 2025 },
+  { name: "August", year: 2025 },
+  { name: "September", year: 2025 },
+  { name: "October", year: 2025 },
+  { name: "November", year: 2025 },
+  { name: "December", year: 2025 },
+];
+
+const tabRoutes = {
+  Calendar: "/Calendar",
+  Tasks: "/Task",
+  Notes: "/Notes",
 };
 
 function App() {
@@ -46,21 +67,23 @@ function App() {
   const [taskInputVisible, setTaskInputVisible] = useState(false);
   const [currentDate, setCurrentDate] = useState("");
   const [isNotifOpen, setIsNotifOpen] = useState(false);
-    const dummyNotifications = [
-      {
-        id: 1,
-        user: "Anda",
-        action: "menambahkan tugas baru ke 'To Do'",
-        time: "2 menit lalu",
-      },
-      {
-        id: 2,
-        user: "Anda",
-        action: "mengedit catatan pada 'Notes'",
-        time: "10 menit lalu",
-      },
-    ];
-  
+  const [currentMonthIndex, setCurrentMonthIndex] = useState(4); // Indeks untuk bulan Mei
+
+  const dummyNotifications = [
+    {
+      id: 1,
+      user: "Anda",
+      action: "menambahkan tugas baru ke 'To Do'",
+      time: "2 menit lalu",
+    },
+    {
+      id: 2,
+      user: "Anda",
+      action: "mengedit catatan pada 'Notes'",
+      time: "10 menit lalu",
+    },
+  ];
+
   const [newTask, setNewTask] = useState({
     name: "",
     description: "",
@@ -115,7 +138,7 @@ function App() {
     taskDetails[currentDate] = {
       title: newTask.name,
       description: newTask.description,
-      status: newTask.status, // Use the status from the newTask state
+      status: newTask.status,
       createdBy: "img/profile.png",
       dueDate: newTask.dueDate,
       createdDate: new Date().toLocaleDateString(),
@@ -130,14 +153,27 @@ function App() {
       reminderDate: "",
       reminderTime: "",
       status: "To Do",
-    }); // Reset form
+    });
   };
 
-  const tabRoutes = {
-    Calendar: "/Calendar",
-    Tasks: "/Task",
-    Notes: "/Notes",
+  const nextMonth = () => {
+    setCurrentMonthIndex((prevIndex) => (prevIndex + 1) % 12);
   };
+
+  const previousMonth = () => {
+    setCurrentMonthIndex((prevIndex) => (prevIndex - 1 + 12) % 12);
+  };
+
+  const getDaysInMonth = (monthIndex) => {
+    return new Date(2025, monthIndex + 1, 0).getDate(); // Menghitung jumlah hari dalam bulan
+  };
+
+  const getFirstDayOfMonth = (monthIndex) => {
+    return new Date(2025, monthIndex, 1).getDay(); // Menghitung hari pertama bulan
+  };
+
+  const daysInMonth = getDaysInMonth(currentMonthIndex);
+  const firstDay = getFirstDayOfMonth(currentMonthIndex);
 
   return (
     <>
@@ -206,9 +242,10 @@ function App() {
               Planify
             </div>
 
-            <nav aria-label="User  actions" className="nav-actions">
+            <nav aria-label="User   actions" className="nav-actions">
               <button
-                aria-label="Notification" onClick={() => setIsNotifOpen(true)}
+                aria-label="Notification"
+                onClick={() => setIsNotifOpen(true)}
                 className="btn-icon"
                 title="Notification"
                 type="button"
@@ -223,7 +260,7 @@ function App() {
                 Go Premium
               </button>
               <img
-                alt="User  Avatar"
+                alt="User   Avatar"
                 className="user-avatar"
                 height="40"
                 src="https://storage.googleapis.com/a1aa/image/b1775588-94f7-4a59-b686-0a1dddb0891b.jpg"
@@ -273,7 +310,7 @@ function App() {
 
                 return (
                   <Link
-                    to={tabRoutes[tab]} // arahkan ke route yang benar
+                    to={tabRoutes[tab]}
                     key={tab}
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
@@ -290,6 +327,7 @@ function App() {
                   className="nav-arrow"
                   tabIndex="0"
                   type="button"
+                  onClick={previousMonth}
                 >
                   <i className="fas fa-chevron-left"></i>
                 </button>
@@ -297,14 +335,20 @@ function App() {
                   aria-atomic="true"
                   aria-live="polite"
                   className="month-title"
+                  onContextMenu={(e) => {
+                    e.preventDefault(); // Mencegah menu konteks default
+                    nextMonth(); // Pindah ke bulan selanjutnya saat klik kanan
+                  }}
                 >
-                  May 2025
+                  {months[currentMonthIndex].name}{" "}
+                  {months[currentMonthIndex].year}
                 </div>
                 <button
                   aria-label="Next month"
                   className="nav-arrow"
                   tabIndex="0"
                   type="button"
+                  onClick={nextMonth}
                 >
                   <i className="fas fa-chevron-right"></i>
                 </button>
@@ -312,7 +356,7 @@ function App() {
             </div>
 
             <table
-              aria-label="Calendar for May 2025"
+              aria-label={`Calendar for ${months[currentMonthIndex].name} ${months[currentMonthIndex].year}`}
               className="calendar-grid"
               role="grid"
             >
@@ -328,204 +372,69 @@ function App() {
                 </tr>
               </thead>
               <tbody>
-                {/* Week 1 */}
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td onClick={() => openPopup("2025-05-01")}>
-                    <div className="day-number">1</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-02")}>
-                    <div className="day-number">2</div>
-                    <div className="event-list">
-                      <div
-                        className="event event-blue"
-                        title="Interview"
-                        id="task-interview"
-                      >
-                        Interview
-                      </div>
-                    </div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-03")}>
-                    <div className="day-number">3</div>
-                    <div className="event-list"></div>
-                  </td>
-                </tr>
-
-                {/* Week 2 */}
-                <tr>
-                  <td onClick={() => openPopup("2025-05-04")}>
-                    <div className="day-number">4</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-05")}>
-                    <div className="day-number">5</div>
-                    <div className="event-list">
-                      <div
-                        className="event event-blue"
-                        title="Big Idea"
-                        id="task-big-idea"
-                      >
-                        Big Idea
-                      </div>
-                      <div
-                        className="event event-blue"
-                        title="Work Planning"
-                        id="task-planning"
-                      >
-                        Work Planning
-                      </div>
-                    </div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-06")}>
-                    <div className="day-number">6</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-07")}>
-                    <div className="day-number">7</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-08")}>
-                    <div className="day-number">8</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-09")}>
-                    <div className="day-number">9</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-10")}>
-                    <div className="day-number">10</div>
-                    <div className="event-list">
-                      <div
-                        className="event event-green"
-                        title="User  Flow"
-                        id="task-user-flow"
-                      >
-                        User Flow
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-
-                {/* Week 3 */}
-                <tr>
-                  <td onClick={() => openPopup("2025-05-11")}>
-                    <div className="day-number">11</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-12")}>
-                    <div className="day-number">12</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-13")}>
-                    <div className="day-number">13</div>
-                    <div className="event-list">
-                      <div
-                        className="event event-red"
-                        title="Call"
-                        id="task-call"
-                      >
-                        Call
-                      </div>
-                    </div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-14")}>
-                    <div className="day-number">14</div>
-                    <div className="event-list">
-                      <div className="event event-red" title="HR" id="task-hr">
-                        HR
-                      </div>
-                    </div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-15")}>
-                    <div className="day-number">15</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-16")}>
-                    <div className="day-number">16</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-17")}>
-                    <div className="day-number">17</div>
-                    <div className="event-list"></div>
-                  </td>
-                </tr>
-
-                {/* Week 4 */}
-                <tr>
-                  <td onClick={() => openPopup("2025-05-18")}>
-                    <div className="day-number">18</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-19")}>
-                    <div className="day-number">19</div>
-                    <div className="event-list">
-                      <div
-                        className="event event-purple"
-                        title="Loft"
-                        id="task-loft"
-                      >
-                        Loft
-                      </div>
-                    </div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-20")}>
-                    <div className="day-number">20</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-21")}>
-                    <div className="day-number">21</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-22")}>
-                    <div className="day-number">22</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-23")}>
-                    <div className="day-number">23</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-24")}>
-                    <div className="day-number">24</div>
-                    <div className="event-list"></div>
-                  </td>
-                </tr>
-
-                {/* Week 5 */}
-                <tr>
-                  <td onClick={() => openPopup("2025-05-25")}>
-                    <div className="day-number">25</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-26")}>
-                    <div className="day-number">26</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-27")}>
-                    <div className="day-number">27</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-28")}>
-                    <div className="day-number">28</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-29")}>
-                    <div className="day-number">29</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-30")}>
-                    <div className="day-number">30</div>
-                    <div className="event-list"></div>
-                  </td>
-                  <td onClick={() => openPopup("2025-05-31")}>
-                    <div className="day-number">31</div>
-                    <div className="event-list"></div>
-                  </td>
-                </tr>
+                {/* Render Tanggal */}
+                {Array.from({ length: 6 }, (_, weekIndex) => (
+                  <tr key={weekIndex}>
+                    {Array.from({ length: 7 }, (_, dayIndex) => {
+                      const dayNumber = weekIndex * 7 + dayIndex - firstDay + 1;
+                      return (
+                        <td
+                          key={dayIndex}
+                          onClick={() => {
+                            if (dayNumber > 0 && dayNumber <= daysInMonth) {
+                              openPopup(
+                                `${months[currentMonthIndex].year}-${String(
+                                  currentMonthIndex + 1
+                                ).padStart(2, "0")}-${String(
+                                  dayNumber
+                                ).padStart(2, "0")}`
+                              );
+                            }
+                          }}
+                        >
+                          {dayNumber > 0 && dayNumber <= daysInMonth ? (
+                            <div className="day-number">{dayNumber}</div>
+                          ) : (
+                            <div className="day-number"></div>
+                          )}
+                          <div className="event-list">
+                            {taskDetails[
+                              `${months[currentMonthIndex].year}-${String(
+                                currentMonthIndex + 1
+                              ).padStart(2, "0")}-${String(dayNumber).padStart(
+                                2,
+                                "0"
+                              )}`
+                            ] && (
+                              <div
+                                className="event event-blue"
+                                title={
+                                  taskDetails[
+                                    `${months[currentMonthIndex].year}-${String(
+                                      currentMonthIndex + 1
+                                    ).padStart(2, "0")}-${String(
+                                      dayNumber
+                                    ).padStart(2, "0")}`
+                                  ].title
+                                }
+                              >
+                                {
+                                  taskDetails[
+                                    `${months[currentMonthIndex].year}-${String(
+                                      currentMonthIndex + 1
+                                    ).padStart(2, "0")}-${String(
+                                      dayNumber
+                                    ).padStart(2, "0")}`
+                                  ].title
+                                }
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
               </tbody>
             </table>
 
@@ -580,8 +489,7 @@ function App() {
                             fontSize: "14px",
                           }}
                         >
-                          <i className="text-success me-1"></i>{" "}
-                          Done
+                          <i className="text-success me-1"></i> Done
                         </span>
                       )}
                     </p>
@@ -675,7 +583,10 @@ function App() {
                             name="taskStatus"
                             id="statusTodo"
                             value="To Do"
-                            checked={newTask.status === "To Do"}
+                            checked={
+                              newTask.status ===
+                              "To                            Do"
+                            }
                             onChange={(e) =>
                               setNewTask({ ...newTask, status: e.target.value })
                             }
