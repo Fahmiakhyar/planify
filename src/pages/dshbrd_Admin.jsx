@@ -149,6 +149,24 @@ const Dashboard = () => {
       borderRadius: "0 0 4px 4px",
       userSelect: "none",
     },
+    approvalButton: {
+      backgroundColor: "#1a4ed8",
+      color: "#fff",
+      border: "none",
+      borderRadius: "12px",
+      padding: "12px 20px",
+      display: "flex",
+      alignItems: "center",
+      gap: "12px",
+      cursor: "pointer",
+      fontSize: "16px",
+      fontWeight: 600,
+      marginBottom: "20px",
+      transition: "background-color 0.3s ease",
+    },
+    approvalButtonIcon: {
+      fontSize: "18px",
+    },
     paymentHistory: {
       backgroundColor: "#fef9f8",
       borderRadius: "8px",
@@ -218,10 +236,15 @@ const Dashboard = () => {
     },
   };
 
+  const handleApprovalClick = () => {
+    // Add your approval payment logic here
+    console.log("Approval Payment clicked");
+  };
+
   return (
     <div>
       <header style={styles.header}>
-         <title>Planify - Admin</title>
+        <title>Planify - Admin</title>
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -304,6 +327,40 @@ const Dashboard = () => {
             <div style={styles.statValue}>4.350</div>
           </div>
         </section>
+
+        <a
+          href="/approval"
+          style={{
+            display: "inline-flex",
+            marginBottom: "20px",
+            alignItems: "center",
+            textDecoration: "none",
+            backgroundColor: "#1a4ed8",
+            color: "#fff",
+            padding: "10px 20px",
+            borderRadius: "10px",
+            cursor: "pointer",
+            transition: "all 0.3s ease", // lebih halus untuk semua perubahan
+            boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)", // sedikit bayangan
+          }}
+          onMouseOver={(e) => {
+            e.target.style.backgroundColor = "#1557d8";
+            e.target.style.boxShadow = "0 4px 10px rgba(0, 0, 0, 0.2)"; // efek hover lebih tegas
+            e.target.style.transform = "scale(1.03)"; // efek membesar sedikit
+          }}
+          onMouseOut={(e) => {
+            e.target.style.backgroundColor = "#1a4ed8";
+            e.target.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.1)";
+            e.target.style.transform = "scale(1)"; // kembali ke ukuran normal
+          }}
+        >
+          <i
+            className="fas fa-shopping-cart"
+            style={{ marginRight: "8px" }}
+          ></i>
+          Approval Payment
+        </a>
+
         <section aria-label="Payment History" style={styles.paymentHistory}>
           <h2 style={styles.paymentHistoryTitle}>Payment History</h2>
           <table style={styles.table}>

@@ -18,11 +18,16 @@ import Admin from "../pages/dshbrd_Admin";
 import UserManagement from "../pages/userManagement";
 import Send from "../pages/send_Admin";
 import LoginAdmin from "../pages/login_Admin";
+import Approval from "../pages/approval";
+import TransactionDetails from "../pages/transactionDetail";
 
 const AppRouter = () => {
   return (
     <Router>
       <Routes>
+         {/* Router Payment */}
+          <Route path="/approval" element={<Approval />} />
+          <Route path="/transactionDetail" element={<TransactionDetails />} />
          {/* Router Admin */}
          <Route path="/login_Admin" element={<LoginAdmin />} />
          <Route path="/dshbrd_Admin" element={<Admin />} />

@@ -422,7 +422,7 @@ function App() {
 
                     <div className="modal-body">
                       <form onSubmit={handleCreateOrUpdateWorkbook}>
-                        <div className="mb-3">
+                        <div className="mb-3 text-start">
                           <label
                             htmlFor="workspace-name"
                             className="form-label"
@@ -441,7 +441,7 @@ function App() {
                           />
                         </div>
 
-                        <div className="mb-3">
+                        <div className="mb-3 text-start">
                           <label htmlFor="picture-cover" className="form-label">
                             Picture / Cover
                           </label>

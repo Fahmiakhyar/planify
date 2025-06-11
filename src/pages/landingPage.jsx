@@ -469,6 +469,10 @@ nav button.signup:focus {
               flex-direction: column;
               gap: 12px;
             }
+              html {
+              scroll-behavior: smooth;
+            }
+
           }
         `}
       </style>
@@ -484,7 +488,9 @@ nav button.signup:focus {
           <span className="logo-text">Planify</span>
         </a>
         <nav>
-          <button onClick={() => (window.location.href = "#")}>About Us</button>
+          <button onClick={() => (window.location.href = "#about")}>
+            About Us
+          </button>
           <button onClick={() => (window.location.href = "/login")}>
             Sign In
           </button>
@@ -547,7 +553,7 @@ nav button.signup:focus {
         </section>
       </main>
 
-      <section className="why-section">
+      <section id="about" className="why-section">
         <div className="why-container">
           <div className="image-wrapper">
             <img

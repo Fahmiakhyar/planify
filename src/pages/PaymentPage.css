@@ -130,6 +130,110 @@
 .btn-enjoy:hover {
   background-color: #0056b3; /* Darker shade on hover */
 }
+/* Gaya umum untuk kartu bank */
+.bank-card {
+  width: 400px; /* Lebar kartu */
+  background-color: #fff; /* Warna latar putih */
+  border-radius: 10px; /* Sudut membulat */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bayangan halus */
+  padding: 20px;
+  margin: 15px auto; /* Jarak antar kartu dan posisi tengah */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  
+}
+
+/* Bagian header kartu bank */
+.bank-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* Kotak ikon bank */
+.bank-icon {
+  color: #fff;
+  font-weight: 700;
+  font-size: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+  user-select: none; /* Tidak bisa diseleksi teks */
+}
+
+/* Warna latar ikon untuk masing-masing bank */
+.bri-bg {
+  background-color: #00458b; /* Biru BCA */
+}
+
+.bca-bg {
+  background-color: #ff4a00; /* Oranye BRI */
+}
+
+/* Nama bank */
+.bank-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Detail isi kartu */
+.bank-details {
+  font-size: 15px;
+  color: #555;
+}
+
+/* Baris detail seperti nomor rekening */
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Area nomor rekening + tombol copy */
+.copy-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Nomor rekening */
+.bank-number {
+  font-weight: 600;
+  font-size: 16px;
+  user-select: text; /* Bisa diseleksi */
+}
+
+/* Tombol copy */
+.copy-field button {
+  padding: 5px 12px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.copy-field button:hover {
+  background-color: #0056b3;
+}
+
+/* Nama pemilik rekening */
+.bank-details p {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #222;
+}
+
+.bank-details strong {
+  font-weight: 700;
+}
 
 
 
