@@ -90,8 +90,8 @@ body {
 
 
 .premium-box {
-  background-color: #b4c1ff;
-  border-radius: 20px;
+ background: linear-gradient(to bottom right, #c7d8f5 0%, #e8f0ff 100%);
+  border-radius: 50px;
   padding: 15px;
   padding-bottom: 10px;
   text-align: center;
@@ -100,7 +100,7 @@ body {
 }
 
 .premium-box .btn {
-  background-color: #3f5fff;
+  background: linear-gradient(to right, #0019e0 0%, #6f7ce0 50%, #0019e0 100%);
   color: #fff;
   margin-top: 10px;
   font-size: 14px;
@@ -111,7 +111,7 @@ body {
   color: #3f5fff;
 }
 .sidebar-right ul li.bottom-menu {
-  margin-top: 30px;
+  margin-top: 25px;
 }
 
 /* Menu bawah Setting & Logout */
@@ -179,7 +179,7 @@ body {
 }
 
 .premium-btn {
-  background-color: var(--primary-color);
+   background: linear-gradient(to right, #0019e0 0%, #6f7ce0 50%, #0019e0 100%);
   color: white;
   border: none;
   border-radius: 20px;
@@ -190,7 +190,7 @@ body {
 }
 
 .premium-btn:hover {
-  background-color: #2f4ed8;
+   background: linear-gradient(to right, #4d5eff 0%, #8693f8 50%, #4d5eff 100%);
 }
 
 .user-avatar {
@@ -438,23 +438,8 @@ body {
   cursor: pointer;
 }
 
-.btn-add-note {
-  padding: 0.6rem 1rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-}
 
-.btn-save {
-  background-color: #28a745;
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-}
+
 
 /* Note card styles */
 .note-card {

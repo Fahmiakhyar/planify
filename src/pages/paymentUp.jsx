@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const PaymentPage = () => {
   const [preview, setPreview] = useState(null);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleFileChange = (e) => {
@@ -340,11 +340,27 @@ const PaymentPage = () => {
           display: flex;
           align-items: center;
         }
+        .features-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+
+        .features-list li {
+          margin-bottom: 8px;
+          font-size: 16px;
+        }
+
+        .check-icon {
+          color: green;
+          font-weight: bold;
+          margin-right: 6px;
+        }
       `}</style>
 
       {/* Tombol Tutup */}
-      <button
-        onClick={() => setIsOpen(false)}
+      <a
+        href="/setting/upgrade"
         aria-label="Close Payment Container"
         style={{
           position: "absolute",
@@ -357,10 +373,11 @@ const PaymentPage = () => {
           color: "#333",
           fontWeight: "bold",
           lineHeight: 1,
+          textDecoration: "none",
         }}
       >
         &times;
-      </button>
+      </a>
 
       <div className="payment-content">
         <title>Payment Up</title>
@@ -386,9 +403,16 @@ const PaymentPage = () => {
               Level up productivity and creativity with expanded access
             </p>
             <ul className="features-list">
-              <li>✔ Access to group chat</li>
-              <li>✔ Customize card backgrounds</li>
-              <li>✔ Connect with multiple friends at once</li>
+              <li>
+                <span className="check-icon">✔</span> Access to group chat
+              </li>
+              <li>
+                <span className="check-icon">✔</span> Customize card backgrounds
+              </li>
+              <li>
+                <span className="check-icon">✔</span> Connect with multiple
+                friends at once
+              </li>
             </ul>
           </div>
 

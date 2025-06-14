@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import NotificationPopup from "../components/Notif";
@@ -24,9 +24,6 @@ function App() {
   });
   const [currentColumn, setCurrentColumn] = useState("To Do");
   const [isNotifOpen, setIsNotifOpen] = useState(false);
-
-  const fileInputRef = useRef(null);
-  const linkInputRef = useRef(null);
 
   const dummyNotifications = [
     {
@@ -281,35 +278,6 @@ function App() {
                   />
                 </div>
 
-                <div className="col-md-6">
-                  <div className="icon-container mb-3" style={{ marginTop: "25px" }}>
-                    <i
-                      className="fas fa-file-circle-plus icon"
-                      title="Upload File"
-                      onClick={() => fileInputRef.current.click()}
-                    ></i>
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      style={{ display: "none" }}
-                      onChange={(e) => {
-                        const file = e.target.files[0];
-                        alert(`File selected: ${file?.name}`);
-                      }}
-                    />
-                    <i
-                      className="fas fa-link icon"
-                      title="Add Link"
-                      onClick={() => linkInputRef.current.focus()}
-                    ></i>
-                    <input
-                      type="text"
-                      ref={linkInputRef}
-                      placeholder="Add link"
-                      style={{ display: "none" }}
-                    />
-                  </div>
-                </div>
               </div>
 
               <div className="row justify-content-end">

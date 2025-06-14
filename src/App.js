@@ -204,13 +204,6 @@ function App() {
               >
                 Go Premium
               </button>
-              <img
-                alt="User  Avatar"
-                className="user-avatar"
-                height="40"
-                src="https://storage.googleapis.com/a1aa/image/b1775588-94f7-4a59-b686-0a1dddb0891b.jpg"
-                width="40"
-              />
             </nav>
           </header>
 

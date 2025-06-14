@@ -114,7 +114,7 @@
 
 /* Save Button */
 .save-btn {
-    background-color: #2563eb;
+   background: linear-gradient(to right, #0019e0 0%, #6f7ce0 50%, #0019e0 100%);
     color: white;
     border: none;
     padding: 10px 24px;
@@ -125,7 +125,8 @@
 }
 
 .save-btn:hover {
-    background-color: #1d4ed8;
+   background: linear-gradient(to right, #4d5eff 0%, #8693f8 50%, #4d5eff 100%);
+
 }
 
 /* Profile Picture Container */

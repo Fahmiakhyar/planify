@@ -163,7 +163,7 @@ const AccountSettings = () => {
                 className="btn px-4 py-2"
                 onClick={() => (window.location.href = "/setting/paymentUp")}
                 style={{
-                  backgroundColor: "#0d6efd",
+                  background: "linear-gradient(to right, #0019e0 0%, #6f7ce0 50%, #0019e0 100%)",
                   color: "white",
                   border: "none",
                   borderRadius: "8px",
