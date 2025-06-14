@@ -77,7 +77,7 @@ nav a.signup:hover,
 nav a.signup:focus,
 nav button.signup:hover,
 nav button.signup:focus {
-  background-color: #3b5de7;
+  background: linear-gradient(to right, #0019e0 0%, #6f7ce0 50%, #0019e0 100%);
   color: #fff;
 }
 
@@ -102,7 +102,7 @@ nav button.signup:focus {
             margin: 0 0 32px;
           }
           .btn-get-started {
-            background: linear-gradient(90deg, #3b5de7 0%, #2f4edb 100%);
+            background: linear-gradient(to right, #0019e0 0%, #6f7ce0 50%, #0019e0 100%);
             border: none;
             border-radius: 6px;
             color: #fff;
@@ -114,7 +114,7 @@ nav button.signup:focus {
             transition: background 0.3s ease;
           }
           .btn-get-started:hover {
-            background: linear-gradient(90deg, #2f4edb 0%, #3b5de7 100%);
+           background: linear-gradient(to right, #0019e0 0%, #6f7ce0 50%, #0019e0 100%);
           }
           .features-title {
             margin: 56px 0 32px;

@@ -20,7 +20,7 @@ const AccountSettings = () => {
   };
 
   const handleGoBack = () => {
-    navigate(-1); // kembali ke halaman sebelumnya
+    navigate("/workspace"); // kembali ke halaman sebelumnya
   };
 
   return (

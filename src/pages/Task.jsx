@@ -138,13 +138,6 @@ function App() {
               <button className="premium-btn" aria-label="Go Premium">
                 Go Premium
               </button>
-              <img
-                className="user-avatar"
-                src="https://storage.googleapis.com/a1aa/image/b1775588-94f7-4a59-b686-0a1dddb0891b.jpg"
-                alt="User Avatar"
-                width="40"
-                height="40"
-              />
             </nav>
           </header>
 
