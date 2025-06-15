@@ -179,7 +179,7 @@ body {
 }
 
 .premium-btn {
-   background: linear-gradient(to right, #0019e0 0%, #6f7ce0 50%, #0019e0 100%);
+  background: linear-gradient(to right, #0019e0 0%, #6f7ce0 50%, #0019e0 100%);
   color: white;
   border: none;
   border-radius: 20px;
